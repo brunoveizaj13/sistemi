@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Sistemi</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+    </h:head>
+
+    <h:body styleClass="login-body">
+        <div class="card login-panel ui-fluid">
+        <h:form>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h1>Sistemi</h1>
+                </div>
+                <div class="ui-g-12">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{loginBean.username}" />
+                        <label>Përdoruesi</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:password value="#{loginBean.password}"/>
+                        <label>Fjalëkalimi</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12">
+                    <p:commandButton value="Hyr" action="#{loginBean.login()}" icon="ui-icon-person" />
+                </div>
+                <div class="ui-g-12">
+                <p:messages showDetail="true" closable="true">
+                	<p:autoUpdate/>
+                </p:messages>
+                </div>
+            </div>
+            </h:form>
+        </div>
+        
+        <div class="login-footer">Sistemi</div>
+        
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+    </h:body>
+
+</html>

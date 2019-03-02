@@ -1,0 +1,49 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+    
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div class="profile-image"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name">#{loginBean.userToken.user.username}</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+                    
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                               <p:commandLink actionListener="#{menuBean.navigate('profile')}">
+	                              <i class="material-icons">&#xE7FD;</i>
+	                              <span>Profili</span>
+                      		    </p:commandLink>                               
+                            </li>                           
+                            <li role="menuitem">
+                        <p:commandLink action="#{loginBean.logout()}">
+                            <i class="material-icons">&#xE8AC;</i>
+                            <span>Dil</span>
+                        </p:commandLink>
+                            </li>
+                        </ul>
+                    </ui:fragment>
+                    
+                    <pu:menu widgetVar="me" >
+                    
+                   	    <p:menuitem id="op_home" value="Home" icon="&#xE871;" action="#{menuBean.navigate('home','operator')}"/>
+                   	    <p:menuitem id="op_reg_form" value="Regjistro" icon="&#xE871;" action="#{menuBean.navigate('ptg_sx_form','operator')}"/>
+                   	    <p:menuitem id="op_reg_map" value="Harta" icon="&#xE871;" action="#{menuBean.navigate('ptg_map','operator')}"/>
+ 
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

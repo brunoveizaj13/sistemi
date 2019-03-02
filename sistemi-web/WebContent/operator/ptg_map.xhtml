@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+
+	<h:form id="map_form">
+
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-md-3">
+				<div class="card" style="height: 98%">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+								<p:outputLabel value="Kërko person ose QV"/>
+								<p:autoComplete id="ac_entity" placeholder="Emër (Atësi) Mbiemër ose Kod QV"
+											value="#{optgMapBean.selectedEntity}"
+											completeMethod="#{optgMapBean.searchEntity}" var="e"
+											itemLabel="#{e.name}" itemValue="#{e}" >
+											
+											<o:converter converterId="omnifaces.ListIndexConverter" list="#{optgMapBean.entities}" />
+	
+											<p:ajax event="itemSelect"
+												listener="#{optgMapBean.onEntitySelect}" update="map_form" />
+								</p:autoComplete>
+							</p:panelGrid>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="ui-g-12 ui-md-9">
+				<div class="card">
+					<div class="ui-g">
+					
+						<div class="ui-g-12">
+						
+						</div>
+						<div class="ui-g-12">
+						
+							<script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC9qlw0itonOIN8FsY2LPI1yXlx5ovBHwc" />
+							<p:gmap model="#{optgMapBean.mapModel}" center="#{optgMapBean.centerMap}" zoom="#{optgMapBean.zoomMap}" type="HYBRID" 
+						                            	style="width: 100%; height: 600px">
+						        <p:ajax event="overlaySelect" listener="#{optgMapBean.onOverlaySelect}" />
+							</p:gmap>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</h:form>
+
+</ui:composition>
