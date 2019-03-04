@@ -38,7 +38,7 @@ public class Person implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NID")
+    @Column(name = "NID", insertable = false, updatable = false)
     private String nid;
     @Size(max = 50)
     @Column(name = "NAME")
@@ -61,7 +61,6 @@ public class Person implements Serializable {
     @Size(max = 1)
     @Column(name = "GENDER")
     private String gender;
-    @Size(max = 50)
     @Column(name = "FAMILY_ID")
     private BigInteger familyId;
     @Size(max = 100)

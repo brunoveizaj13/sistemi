@@ -24,7 +24,11 @@ public class PatronagePoint implements Serializable {
 	
 	public void setPoint(Clob c)
 	{
-		if(c == null) point = null;
+		if(c == null) 
+		{
+			point = null;
+			return;
+		}
 		try {
 			this.point = c.getSubString(1L, (int)c.length());
 		} catch (SQLException e) {

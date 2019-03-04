@@ -214,7 +214,7 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		

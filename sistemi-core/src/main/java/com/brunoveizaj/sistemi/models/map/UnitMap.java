@@ -19,7 +19,11 @@ public class UnitMap implements Serializable {
 	
 	public void setCenter(Clob c)
 	{
-		if(c == null) center = null;
+		if(c == null) 
+		{
+			center = null;
+			return;
+		}
 		try {
 			this.center = c.getSubString(1L, (int)c.length());
 		} catch (SQLException e) {
@@ -30,7 +34,11 @@ public class UnitMap implements Serializable {
 	
 	public void setShape(Clob c)
 	{
-		if(c == null) shape = null;
+		if(c == null) 
+		{
+			shape = null;
+			return;
+		}
 		try {
 			this.shape = c.getSubString(1L, (int)c.length());
 		} catch (SQLException e) {

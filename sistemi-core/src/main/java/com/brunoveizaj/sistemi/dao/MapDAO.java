@@ -204,6 +204,7 @@ public class MapDAO {
 			sql += "V_BUILDINGS_UNITID t WHERE UNIT_ID="+unitId;
 		}
 		
+		
 		List<Object[]> result = em.createNativeQuery(sql)
 				.getResultList();
 		
