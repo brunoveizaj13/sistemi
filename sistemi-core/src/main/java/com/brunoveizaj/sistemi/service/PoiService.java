@@ -11,6 +11,7 @@ import com.brunoveizaj.sistemi.dao.CrudDAO;
 import com.brunoveizaj.sistemi.entities.Building;
 import com.brunoveizaj.sistemi.entities.Municipality;
 import com.brunoveizaj.sistemi.entities.Person;
+import com.brunoveizaj.sistemi.entities.PersonDetails;
 import com.brunoveizaj.sistemi.entities.Poi;
 import com.brunoveizaj.sistemi.entities.PoiType;
 import com.brunoveizaj.sistemi.entities.Qv;
@@ -44,15 +45,17 @@ public class PoiService {
 		}
 		
 		Person person = crudDAO.findById(Person.class, form.getPerson().getNid());
-		String phone = (person.getPhone() == null?"":person.getPhone());
-		String email = (person.getEmail()== null?"":person.getEmail());
+		PersonDetails details = person.getDetails();
+		String phone = (details.getPhone() == null?"":details.getPhone());
+		String email = (details.getEmail()== null?"":details.getEmail());
 		phone += (form.getPhone() == null?"":form.getPhone());
 		email += (form.getEmail() == null?"":form.getEmail());
-		person.setPhone(phone);
-		person.setEmail(email);
-		person.setPatronageStatus(IStatus.ACTIVE);				
+		details.setPhone(phone);
+		details.setEmail(email);
+		details.setPoiStatus(IStatus.ACTIVE);				
 		
-		person = crudDAO.update(person);
+		details = crudDAO.update(details);
+		//person = crudDAO.update(person);
 		
 		if(form.getBuildingId() != null)
 		{

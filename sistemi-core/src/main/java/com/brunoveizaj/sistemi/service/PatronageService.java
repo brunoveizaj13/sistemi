@@ -17,6 +17,7 @@ import com.brunoveizaj.sistemi.entities.Patronage;
 import com.brunoveizaj.sistemi.entities.PatronagePerson;
 import com.brunoveizaj.sistemi.entities.PatronageType;
 import com.brunoveizaj.sistemi.entities.Person;
+import com.brunoveizaj.sistemi.entities.PersonDetails;
 import com.brunoveizaj.sistemi.exceptions.EntityExistsException;
 import com.brunoveizaj.sistemi.exceptions.ValidationException;
 import com.brunoveizaj.sistemi.forms.PatronageForm;
@@ -41,15 +42,17 @@ public class PatronageService {
 		}
 
 		Person person = crudDAO.findById(Person.class, form.getPerson().getNid());
-		String phone = (person.getPhone() == null?"":person.getPhone());
-		String email = (person.getEmail()== null?"":person.getEmail());
+		PersonDetails details = person.getDetails();
+		String phone = (details.getPhone() == null?"":details.getPhone());
+		String email = (details.getEmail()== null?"":details.getEmail());
 		phone += (form.getPhone() == null?"":form.getPhone());
 		email += (form.getEmail() == null?"":form.getEmail());
-		person.setPhone(phone);
-		person.setEmail(email);
-		person.setPatronageStatus(IStatus.ACTIVE);				
+		details.setPhone(phone);
+		details.setEmail(email);
+		details.setPatronageStatus(IStatus.ACTIVE);				
 		
-		person = crudDAO.update(person);
+		details = crudDAO.update(details);
+		//person = crudDAO.update(person);
 		
 		if(form.getBuildingId() != null)
 		{
@@ -117,14 +120,16 @@ public class PatronageService {
 			if(register) // duhet regjistruar
 			{
 				Person person = crudDAO.findById(Person.class, m.getPerson().getNid());
-				String phone = (person.getPhone() == null?"":person.getPhone());
-				String email = (person.getEmail()== null?"":person.getEmail());
+				PersonDetails details = person.getDetails();
+				String phone = (details.getPhone() == null?"":details.getPhone());
+				String email = (details.getEmail()== null?"":details.getEmail());
 				phone += (m.getPhone() == null?"":m.getPhone());
 				email += (m.getEmail() == null?"":m.getEmail());
-				person.setPhone(phone);
-				person.setEmail(email);
+				details.setPhone(phone);
+				details.setEmail(email);
+				details = crudDAO.update(details);
 				//person.setInPatronageStatus(IStatus.ACTIVE);
-				person = crudDAO.update(person);
+				//person = crudDAO.update(person);
 				
 				PatronagePerson pp = new PatronagePerson();
 				pp.setCreateTime(Calendar.getInstance().getTime());
@@ -165,15 +170,16 @@ public class PatronageService {
 	
 		
 		Person person = crudDAO.findById(Person.class, form.getPerson().getNid());
-		String phone = (person.getPhone() == null?"":person.getPhone());
-		String email = (person.getEmail()== null?"":person.getEmail());
+		PersonDetails details = person.getDetails();
+		String phone = (details.getPhone() == null?"":details.getPhone());
+		String email = (details.getEmail()== null?"":details.getEmail());
 		phone += (form.getPhone() == null?"":form.getPhone());
 		email += (form.getEmail() == null?"":form.getEmail());
-		person.setPhone(phone);
-		person.setEmail(email);
-		person.setPatronageInstitutionStatus(IStatus.ACTIVE);				
-		
-		person = crudDAO.update(person);
+		details.setPhone(phone);
+		details.setEmail(email);
+		details.setPatronageInstitutionStatus(IStatus.ACTIVE);				
+		details = crudDAO.update(details);
+		//person = crudDAO.update(person);
 		
 		
 		Patronage existing = patronageDAO.findByNid(form.getPerson().getNid(), IPatronageType.INSTITUTION);
@@ -237,14 +243,17 @@ public class PatronageService {
 			if(register) // duhet regjistruar
 			{
 				Person person = crudDAO.findById(Person.class, m.getPerson().getNid());
-				String phone = (person.getPhone() == null?"":person.getPhone());
-				String email = (person.getEmail()== null?"":person.getEmail());
+				PersonDetails details = person.getDetails();
+				String phone = (details.getPhone() == null?"":details.getPhone());
+				String email = (details.getEmail()== null?"":details.getEmail());
 				phone += (m.getPhone() == null?"":m.getPhone());
 				email += (m.getEmail() == null?"":m.getEmail());
-				person.setPhone(phone);
-				person.setEmail(email);
+				details.setPhone(phone);
+				details.setEmail(email);
 				//person.setInPatronageStatus(IStatus.ACTIVE);
-				person = crudDAO.update(person);
+				
+				details = crudDAO.update(details);
+				//person = crudDAO.update(person);
 				
 				PatronagePerson pp = new PatronagePerson();
 				pp.setCreateTime(Calendar.getInstance().getTime());

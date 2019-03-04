@@ -50,32 +50,32 @@ public class Assembler {
 		
 		PersonDTO dto = new PersonDTO();
 		
-		dto.setDapStatus(e.getDapStatus() != null && e.getDapStatus().intValue() == IStatus.ACTIVE);
+		dto.setDapStatus(e.getDetails().getDapStatus() != null && e.getDetails().getDapStatus().intValue() == IStatus.ACTIVE);
 		dto.setDob(DateUtil.formatReverseToNormalDate(e.getDob()));
-		dto.setEconomicHelpStatus(e.getEconomicHelpStatus() != null && e.getEconomicHelpStatus().intValue() == IStatus.ACTIVE);
-		dto.setEmail(e.getEmail());
+		dto.setEconomicHelpStatus(e.getDetails().getEconomicHelpStatus() != null && e.getDetails().getEconomicHelpStatus().intValue() == IStatus.ACTIVE);
+		dto.setEmail(e.getDetails().getEmail());
 		dto.setFamilyId(e.getFamilyId()==null?0:e.getFamilyId().longValue());
 		dto.setFamilyRelation(e.getFamilyRelation());
 		dto.setFatherName(e.getFatherName());
-		dto.setFirstTimeVoterStatus(e.getFirstTimeVoterStatus() != null && e.getFirstTimeVoterStatus().intValue() == IStatus.ACTIVE);
+		dto.setFirstTimeVoterStatus(e.getDetails().getFirstTimeVoterStatus() != null && e.getDetails().getFirstTimeVoterStatus().intValue() == IStatus.ACTIVE);
 		dto.setFraction(e.getFraction());
 		dto.setGender(e.getGender());
 		dto.setMaidenName(e.getMaidenName());
-		dto.setMemberStatus(e.getMemberStatus() != null && e.getMemberStatus().intValue() == IStatus.ACTIVE);
+		dto.setMemberStatus(e.getDetails().getMemberStatus() != null && e.getDetails().getMemberStatus().intValue() == IStatus.ACTIVE);
 		dto.setMotherName(e.getMotherName());
 		dto.setName(e.getName());
 		dto.setNid(e.getNid());
-		dto.setPatronageInstitutionStatus(e.getPatronageInstitutionStatus() != null && e.getPatronageInstitutionStatus().intValue() == IStatus.ACTIVE);
-		dto.setPatronageStatus(e.getPatronageStatus() != null && e.getPatronageStatus().intValue() == IStatus.ACTIVE);
-		dto.setPhone(e.getPhone());
-		dto.setPoiStatus(e.getPoiStatus() != null && e.getPoiStatus().intValue() == IStatus.ACTIVE);
+		dto.setPatronageInstitutionStatus(e.getDetails().getPatronageInstitutionStatus() != null && e.getDetails().getPatronageInstitutionStatus().intValue() == IStatus.ACTIVE);
+		dto.setPatronageStatus(e.getDetails().getPatronageStatus() != null && e.getDetails().getPatronageStatus().intValue() == IStatus.ACTIVE);
+		dto.setPhone(e.getDetails().getPhone());
+		dto.setPoiStatus(e.getDetails().getPoiStatus() != null && e.getDetails().getPoiStatus().intValue() == IStatus.ACTIVE);
 		dto.setQv(toDto(e.getQv()));
 		dto.setQvAddress(e.getQvAddress());
-		dto.setSocialHouseStatus(e.getSocialHouseStatus() != null && e.getSocialHouseStatus().intValue() == IStatus.ACTIVE);
+		dto.setSocialHouseStatus(e.getDetails().getSocialHouseStatus() != null && e.getDetails().getSocialHouseStatus().intValue() == IStatus.ACTIVE);
 		dto.setSubjectPartyCode(e.getSubjectPartyCode());
 		dto.setSurname(e.getSurname());
 		dto.setVotingNo(e.getVotingNo()==null?0:e.getVotingNo().intValue());
-		dto.setVoting2017Status(e.getVoting2017Status() != null && e.getVoting2017Status().intValue() == IStatus.ACTIVE);
+		dto.setVoting2017Status(e.getDetails().getVoting2017Status() != null && e.getDetails().getVoting2017Status().intValue() == IStatus.ACTIVE);
 		
 		
 		

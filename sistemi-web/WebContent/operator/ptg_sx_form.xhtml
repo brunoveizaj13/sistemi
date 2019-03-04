@@ -2,23 +2,163 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
 
 
 	<h:form id="ptg_sx_form">
 
-		<div class="ui-g ui-fluid">
-			<div class="ui-g-12">
-				<div class="card card-w-title">
-					<h1>Kërko patronazhistin</h1>
-					<div class="ui-g">
-						<div class="ui-g-12">
-							
+	<h:panelGroup layout="block" id="sx_fragment"
+			rendered="#{optgSxBean.renderFilter}">
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12">
+					<div class="card card-w-title">
+						<h1>Kërko patronazhistin</h1>
+						<div class="ui-g">
+							<div class="ui-g-12">
+
+								<p:panelGrid layout="grid" columns="4"
+									styleClass="ui-panelgrid-blank form-group">
+
+									<p:inputText placeholder="Emri"
+										value="#{optgSxBean.req.name}" />
+									<p:inputText placeholder="Mbiemri"
+										value="#{optgSxBean.req.surname}" />
+									<p:inputText placeholder="Atësia"
+										value="#{optgSxBean.req.fatherName}" />
+									<p:inputText placeholder="Mëmësia"
+										value="#{optgSxBean.req.motherName}" />
+
+									<p:inputText placeholder="NID"
+										value="#{optgSxBean.req.nid}" />
+									<p:inputText placeholder="Mbiemri Vajzërisë"
+										value="#{optgSxBean.req.maidenName}" />
+									<p:inputMask mask="99.99.9999" placeholder="Datëlindja"
+										value="#{optgSxBean.req.dob}" />
+									<p:selectOneMenu placeholder="Gjinia"
+										value="#{optgSxBean.req.gender}" autoWidth="false">
+										<f:selectItem itemValue="#{null}" itemLabel="Gjinia" />
+										<f:selectItem itemValue="M" itemLabel="M" />
+										<f:selectItem itemValue="F" itemLabel="F" />
+									</p:selectOneMenu>
+
+									
+									<p:selectOneMenu placeholder="Rrethi" value="#{optgSxBean.req.regionId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Rrethi"/>
+										<f:selectItems value="#{optgSxBean.regions}" var="r" itemValue="#{r.id}" itemLabel="#{r.name}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu placeholder="Bashkia" value="#{optgSxBean.req.municipalityId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Bashkia"/>
+										<f:selectItems value="#{optgSxBean.municipalities}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu placeholder="Njësia" value="#{optgSxBean.req.unitId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Njësia"/>
+										<f:selectItems value="#{optgSxBean.units}" var="u" itemValue="#{u.id}" itemLabel="#{u.name}" />
+									</p:selectOneMenu>
+									<p:autoComplete id="ac_entity" placeholder="Kodi Qv"
+											value="#{optgSxBean.req.qvId}" queryDelay="500"
+											completeMethod="#{optgSxBean.searchQv}" var="q"
+											itemLabel="#{q.code}" itemValue="#{q}" >											
+											<o:converter converterId="omnifaces.ListIndexConverter" list="#{optgSxBean.qvs}" />
+								</p:autoComplete>
+
+									<p:inputText placeholder="Vendlindja"
+										value="#{optgSxBean.req.pob}" />
+									<p:inputText placeholder="Nga Mosha"
+										value="#{optgSxBean.req.fromAge}" />
+									<p:inputText placeholder="Në Moshën"
+										value="#{optgSxBean.req.toAge}" />
+
+								</p:panelGrid>
+
+
+							</div>
+
+							<div class="ui-g-12 ui-md-4">
+								<p:panelGrid layout="grid" columns="2"
+									styleClass="ui-panelgrid-blank">
+									<p:commandButton value="Kërko" update="@form" styleClass="blue-btn"
+										action="#{optgSxBean.search()}" icon="ui-icon-search" />
+										<p:commandButton value="Pastro" update="@form"
+										action="#{optgSxBean.clear()}" icon="ui-icon-trash" 
+										styleClass="green-btn"/>
+								</p:panelGrid>
+							</div>
+
+							<div class="ui-g-12">
+								<p:messages showDetail="true" closable="true" >
+									<p:autoUpdate />
+								</p:messages>
+							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</h:panelGroup>
+
+		<h:panelGroup layout="block" id="sx_list"
+			rendered="#{!optgSxBean.renderFilter}">
+			<div class="ui-g ui-fluid">
+
+						<div class="ui-g-12 ui-md-3">
+						<h:panelGrid  columns="2">
+							<p:commandButton value="Mbrapa"
+								action="#{optgSxBean.renderFilter()}" update="@form"
+								process="@this" styleClass="orange-btn" icon="fa fa-arrow-left" />
+
+							<p:commandButton value="Kërkim i ri"
+								action="#{optgSxBean.clear()}" update="@form" process="@this"
+								styleClass="blue-btn" icon="ui-icon-search" />
+						</h:panelGrid>
+						</div>
+				<div class="ui-g-12 ui-fluid">
+					<p:dataTable value="#{optgSxBean.persons}" var="p"
+						paginatorAlwaysVisible="false" paginator="true" rows="20"
+						rowIndexVar="r" selectionMode="single"
+						selection="#{optgSxBean.selectedPerson}" rowKey="#{p.nid}"
+						rowsPerPageTemplate="10,20,30,50" reflow="true">
+						<p:ajax event="rowSelect"
+							listener="#{optgSxBean.onPersonSelect()}" update=":main">
+						</p:ajax>
+						<f:facet name="header">
+							Lista personave
+						</f:facet>
+						
+						<p:column headerText="#">
+                                    #{r+1}
+                        </p:column>
+						<p:column headerText="Emri" sortBy="#{p.name}">
+                                    #{p.name}
+                        </p:column>
+						<p:column headerText="Mbiemri" sortBy="#{p.surname}">
+                                    #{p.surname}
+                        </p:column>
+						<p:column headerText="Atësia" sortBy="#{p.fatherName}">
+                                    #{p.fatherName}
+                        </p:column>
+						<p:column headerText="Datëlindja" sortBy="#{p.dob}">
+                                    #{p.dob}
+                        </p:column>
+						<p:column headerText="Mbiemri V" sortBy="#{p.maidenName}">
+                                    #{p.maidenName}
+                        </p:column>
+						<p:column headerText="Bashkia" sortBy="#{p.qv.unit.municipality.name}">
+                                    #{p.qv.unit.municipality.name}
+                        </p:column>
+                        <p:column headerText="Njësia" sortBy="#{p.qv.unit.name}">
+                                    #{p.qv.unit.name}
+                        </p:column>
+                        <p:column headerText="Qv" sortBy="#{p.qv.code}">
+                                    #{p.qv.code}/#{p.fraction}
+                        </p:column>
+
+					</p:dataTable>
+				</div>
+
+			</div>
+		</h:panelGroup>
+							
 
 	</h:form>
 

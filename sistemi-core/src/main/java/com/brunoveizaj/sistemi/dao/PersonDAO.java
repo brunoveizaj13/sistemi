@@ -31,13 +31,13 @@ public class PersonDAO {
 	
 	public List<Person> getFamily(Long familyId)
 	{
-		return em.createQuery("FROM Person p WHERE p.familyId=:fid ORDER BY p.familyRowId")
+		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId=:fid ORDER BY p.familyRowId")
 				.setParameter("fid", familyId).getResultList();
 	}
 	
 	public List<Person> getFamily(String nid)
 	{
-		return em.createQuery("FROM Person p WHERE p.familyId IN (SELECT s.familyId FROM Person s WHERE s.nid=:nid) ORDER BY p.familyRowId")
+		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId IN (SELECT s.familyId FROM Person s WHERE s.nid=:nid) ORDER BY p.familyRowId")
 				.setParameter("nid", nid).getResultList();
 	}
 	
@@ -46,7 +46,7 @@ public class PersonDAO {
 	{
 		
 		HashMap<String,Object> params = new HashMap<>();
-		String sql = "FROM Person p WHERE 1=1 ";
+		String sql = "FROM Person p JOIN FETCH p.details d WHERE 1=1 ";
 		String order = "ORDER BY p.nid";
 		
 		if(StringUtil.isValid(criterias.getFraction()))

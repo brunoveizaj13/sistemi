@@ -33,33 +33,23 @@ public class PersonDetails implements Serializable {
     @Column(name = "NID")
     private String nid;
     @Column(name = "PATRONAGE")
-    private BigInteger patronage;
+    private Integer patronageStatus;
     @Column(name = "PATRONAGE_INSTITUTION")
-    private BigInteger patronageInstitution;
+    private Integer patronageInstitutionStatus;
     @Column(name = "POI")
-    private BigInteger poi;
+    private Integer poiStatus;
     @Column(name = "MEMBER")
-    private BigInteger member;
+    private Integer memberStatus;
     @Column(name = "FIRST_TIME_VOTER")
-    private BigInteger firstTimeVoter;
+    private Integer firstTimeVoterStatus;
     @Column(name = "VOTING_2017")
-    private BigInteger voting2017;
+    private Integer voting2017Status;
     @Column(name = "DAP")
-    private BigInteger dap;
+    private Integer dapStatus;
     @Column(name = "ECONOMIC_HELP")
-    private BigInteger economicHelp;
+    private BigInteger economicHelpStatus;
     @Column(name = "SOCIAL_HOUSE")
-    private BigInteger socialHouse;
-    @Column(name = "STATUS_1")
-    private BigInteger status1;
-    @Column(name = "STATUS_2")
-    private BigInteger status2;
-    @Column(name = "STATUS_3")
-    private BigInteger status3;
-    @Column(name = "STATUS_4")
-    private BigInteger status4;
-    @Column(name = "STATUS_5")
-    private BigInteger status5;
+    private Integer socialHouseStatus;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "PHONE")
