@@ -160,6 +160,7 @@ public class CrudDAO {
 		
 		sql += "ORDER BY q.code";
 		
+		
 		Query q = em.createQuery(sql);
 		
 		if(regionId != null)

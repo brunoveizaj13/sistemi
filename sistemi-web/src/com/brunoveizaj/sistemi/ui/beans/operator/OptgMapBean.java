@@ -267,6 +267,10 @@ public class OptgMapBean implements Serializable {
 	public void loadMap()
 	{
 				
+		if(this.selectedPatronage == null || this.selectedPatronage.getId() <= 0)
+		{
+			Messages.throwFacesMessage("Patronazhisti i papercaktuar",2);
+		}
 		this.mapModel = new DefaultMapModel();
         Polygon polygon = new Polygon();
         mapModel.addOverlay(polygon);

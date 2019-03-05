@@ -2,24 +2,235 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 
-	<h:form id="home_form">
+	<h:form id="ptg_view_form">
 
-		<div class="ui-g ui-fluid">
-			<div class="ui-g-12">
-				<div class="card card-w-title">
-					<h1>Kartela e Patronazhistit</h1>
-					<div class="ui-g">
-						<div class="ui-g-12">
-							
+		<f:event type="preRenderComponent" listener="#{optgViewBean.init()}" />
+
+		<h:panelGroup layout="block" id="ptg_data">
+
+			<div class="ui-g ">
+				<div class="ui-g-12">
+					<p:commandButton action="#{navBean.back()}" value="Mbrapa"
+						process="@this" update=":main" styleClass="orange-btn"
+						icon="fa fa-arrow-left" />
+				</div>
+				<div class="ui-g-12 ui-fluid">
+					<p:messages closable="true" showDetail="true">
+						<p:autoUpdate />
+					</p:messages>
+				</div>
+				<div class="ui-g-12 ui-md-3 ui-fluid">
+					<div class="card card-w-title" style="height: 98%;">
+						<h3>#{optgViewBean.registerPatronage?'Regjistro
+							Patronazhistin':'Patronazhisti i zgjedhur'}</h3>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<p:outputLabel value="Emri plotë:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgViewBean.patronageForm.person.name} #{optgViewBean.patronageForm.person.fatherName} #{optgViewBean.patronageForm.person.surname}" />
+									<p:outputLabel value="Qv:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgViewBean.patronageForm.person.qv.code}/#{optgViewBean.patronageForm.person.fraction}" />
+									<p:outputLabel value="Njësia:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgViewBean.patronageForm.person.qv.unit.name}" />
+									<p:outputLabel value="Telefon:" styleClass="bold" />
+									<p:inputText placeholder="Shto telefon"
+										value="#{optgViewBean.patronageForm.phone}" />
+								</p:panelGrid>
+							</div>
+							<div class="ui-g-12">
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<p:commandButton value="Regjistro"
+										rendered="#{optgViewBean.registerPatronage}"
+										styleClass="green-btn" icon="fa fa-plus"
+										action="#{optgViewBean.registerPatronage()}" update="ptg_data">
+										<p:confirm header="Regjistro patronazhist"
+											message="Jeni të sigurt?" />
+									</p:commandButton>
+									<p:commandButton value="Modifiko"
+										rendered="#{!optgViewBean.registerPatronage}"
+										icon="fa fa-edit" action="#{optgViewBean.modifyPatronage()}"
+										update="ptg_data">
+										<p:confirm header="Modifiko patronazhistin"
+											message="Jeni të sigurt?" />
+									</p:commandButton>
+								</p:panelGrid>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+				<h:panelGroup layout="block"
+					rendered="#{!optgViewBean.registerPatronage}">
+					<div class="ui-g-12 ui-md-9 ui-fluid">
+						<div class="card" style="height: 98%">
+							<div class="ui-g">
+								<div class="ui-g-12 ui-md-3">
+									<p:commandButton value="Shto banorë" styleClass="amber-btn"
+										icon="fa fa-user-plus" action="#{optgViewBean.prepareDialog()}" update=":add_person_dlg"
+										oncomplete="PF('addPersonWid').show();"/>
+								</div>
+								<div class="ui-g-12 ui-md-3">
+									<p:commandButton value="Shto banorë nga Harta"
+										styleClass="green-btn" icon="fa fa-map" />
+								</div>
+								<div class="ui-g-12">
 
+									<p:dataTable value="#{optgViewBean.personsInPatronage}"
+										var="pp" rowIndexVar="r" styleClass="no-border"
+										paginator="true" paginatorAlwaysVisible="false" rows="20"
+										rowsPerPageTemplate="10,15,20,30,50"
+										emptyMessage="Nuk ka asnje banore nen patronazh">
+										<f:facet name="header">Banorët nën patronazh</f:facet>
+										<p:column headerText="#" style="text-align: left">
+						     	#{r+1}
+							</p:column>
+										<p:column headerText="Nr listë" style="text-align: left">
+						     	#{pp.person.votingNo}
+							</p:column>
+										<p:column headerText="Banori" style="text-align: left">
+						     	#{pp.person.name} #{pp.person.fatherName} #{pp.person.surname}
+							</p:column>
+										<p:column headerText="Qv" style="text-align: left">
+						     	#{pp.person.qv.code}/#{pp.person.fraction}
+							</p:column>
+										<p:column headerText="Data" style="text-align: left">
+						     	#{formatBean.formatTimestamp(pp.createTime)}
+							</p:column>
+										<p:column headerText="User" style="text-align: left">
+						     	#{pp.createUser}
+							</p:column>
+									</p:dataTable>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</div>
+		</h:panelGroup>
 	</h:form>
+
+
+
+<p:dialog id="add_person_dlg" widgetVar="addPersonWid" modal="true" closeOnEscape="true" responsive="true"
+          header="Shto banorë në patronazh" width="90%" draggable="false" resizable="false" height="600px" 
+           appendTo="@(body)" fitViewport="true" maximizable="true">
+          
+          <h:form id="add_person_form">
+          
+          <div class="ui-g ">
+          
+	          <div class="ui-g-12 ui-fluid">
+	          	<p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+	          	
+	          	                    <p:inputText placeholder="Emri"
+										value="#{optgViewBean.req.name}" />
+									<p:inputText placeholder="Mbiemri"
+										value="#{optgViewBean.req.surname}" />
+									<p:inputText placeholder="Atësia"
+										value="#{optgViewBean.req.fatherName}" />
+									<p:inputText placeholder="NID"
+										value="#{optgViewBean.req.nid}" />
+									
+									<p:selectOneMenu placeholder="Rrethi" value="#{optgViewBean.req.regionId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Rrethi"/>
+										<f:selectItems value="#{cacheBean.regions}" var="r" itemValue="#{r.id}" itemLabel="#{r.name}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu placeholder="Bashkia" value="#{optgViewBean.req.municipalityId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Bashkia"/>
+										<f:selectItems value="#{cacheBean.municipalities}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu placeholder="Njësia" value="#{optgViewBean.req.unitId}" autoWidth="false" filter="true" filterMatchMode="contains">
+										<f:selectItem itemValue="#{null}" itemLabel="Njësia"/>
+										<f:selectItems value="#{cacheBean.units}" var="u" itemValue="#{u.id}" itemLabel="#{u.name}" />
+									</p:selectOneMenu>
+									<p:autoComplete id="ac_entity" placeholder="Kodi Qv"
+											value="#{optgViewBean.selectedQv}" queryDelay="500"
+											completeMethod="#{optgViewBean.searchQv}" var="q"
+											itemLabel="#{q.code}" itemValue="#{q}" >											
+											<o:converter converterId="omnifaces.ListIndexConverter" list="#{optgViewBean.qvs}" />
+								</p:autoComplete>
+								
+								<p:commandButton value="Kërko" action="#{optgViewBean.searchPerson()}" styleClass="green-btn"
+								 update="@form" icon="fa fa-search"/>
+								<p:commandButton value="Pastro" action="#{optgViewBean.clearSearchPerson()}" 
+								styleClass="red-btn" update="@form" icon="fa fa-trash"/>
+	          	</p:panelGrid>
+	          </div>
+	          <div class="ui-g-12">
+	          	<p:messages showDetail="true" closable="true">
+	             	<p:autoUpdate/>
+	          	</p:messages>
+	          </div>
+          	  <div class="ui-g-12">
+	          		<p:dataTable value="#{optgViewBean.personForms}" var="p"
+						paginatorAlwaysVisible="false" paginator="true" rows="20"
+						rowIndexVar="r" rowKey="#{p.person.nid}"
+						rowsPerPageTemplate="10,20,30,50" reflow="true">
+
+						<f:facet name="header">
+							Lista personave
+						</f:facet>
+						<p:column headerText="#">
+                                    #{r+1}
+                        </p:column>
+                        <p:column headerText="Nr Listë" sortBy="#{p.person.votingNo}">
+                                   <h:outputText value="#{p.person.votingNo}" styleClass="bold" />
+                        </p:column>
+						<p:column headerText="Emri banorit" sortBy="#{p.person.name} #{p.person.surname}">
+                                    #{p.person.name} #{p.person.fatherName} #{p.person.surname}
+                        </p:column>
+						<p:column headerText="Datëlindja" sortBy="#{p.person.dob}">
+                                    #{p.person.dob}
+                        </p:column>
+						<p:column headerText="Mbiemri V" sortBy="#{p.person.maidenName}">
+                                    #{p.person.maidenName}
+                        </p:column>
+						<p:column headerText="Bashkia" sortBy="#{p.person.qv.unit.municipality.name}">
+                                    #{p.person.qv.unit.municipality.name}
+                        </p:column>
+                        <p:column headerText="Njësia" sortBy="#{p.person.qv.unit.name}">
+                                    #{p.person.qv.unit.name}
+                        </p:column>
+                        <p:column headerText="Qv" sortBy="#{p.person.qv.code}">
+                                    <h:outputText value="#{p.person.qv.code}/#{p.person.fraction}" styleClass="bold" />
+                        </p:column>
+						<p:column headerText="Familja" >
+                                    <p:selectBooleanCheckbox value="#{p.withFamily}" label="Shto bashke me familjen"/>
+                        </p:column>
+						<p:column headerText="Telefon" >
+                                    <p:inputText value="#{p.phone}"/>
+                        </p:column>
+                        <p:column headerText="" >
+                                    <p:commandButton action="#{optgViewBean.addPersonsInPatronage(p)}" update=":ptg_view_form:ptg_data"
+                                      icon="fa fa-check" styleClass="pink-btn">
+                                      <p:confirm header="Shto banorin" message="Jeni të sigurt?"/>
+                                    </p:commandButton>
+                        </p:column>
+                        
+						
+					</p:dataTable>
+	          </div>
+          
+          </div>
+          
+          
+          </h:form>
+          
+</p:dialog>
+
+
+
+
+
+
 
 </ui:composition>

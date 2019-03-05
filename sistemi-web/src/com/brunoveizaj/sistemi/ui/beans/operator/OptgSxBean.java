@@ -42,6 +42,7 @@ public class OptgSxBean implements Serializable {
 	PersonDTO selectedPerson;
 	
 	List<QvDTO> qvs;
+	QvDTO selectedQv;
 	List<RegionDTO> regions;
 	List<MunicipalityDTO> municipalities;
 	List<UnitDTO> units;
@@ -61,7 +62,7 @@ public class OptgSxBean implements Serializable {
 		this.req = new PersonSx();
 		this.selectedPerson = null;
 		this.persons = null;
-		
+		this.selectedQv = null;
 		this.qvs = null;
 		
 	}
@@ -84,10 +85,8 @@ public class OptgSxBean implements Serializable {
 		{
 			unitId = req.getUnitId();
 		}
-		
-		System.out.println(regionId+" "+municipalityId+" "+unitId+" "+query);
-		
-		this.qvs = new HelperService().listQv(regionId, municipalityId, unitId, query+"%");
+				
+		this.qvs = new HelperService().listQv(regionId, municipalityId, unitId, query);
 		return qvs;
 	}
 	
@@ -95,7 +94,8 @@ public class OptgSxBean implements Serializable {
 	public void search()
 	{
 		try {
-			
+			if(this.selectedQv != null)
+			{req.setQvId(selectedQv.getId());}
 			this.persons = new PersonService().searchPerson(req);
 			this.selectedPerson = null;
 			

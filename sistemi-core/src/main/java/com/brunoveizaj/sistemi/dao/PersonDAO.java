@@ -31,13 +31,13 @@ public class PersonDAO {
 	
 	public List<Person> getFamily(Long familyId)
 	{
-		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId=:fid ORDER BY p.familyRowId")
+		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId=:fid")
 				.setParameter("fid", familyId).getResultList();
 	}
 	
 	public List<Person> getFamily(String nid)
 	{
-		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId IN (SELECT s.familyId FROM Person s WHERE s.nid=:nid) ORDER BY p.familyRowId")
+		return em.createQuery("FROM Person p JOIN FETCH p.details d WHERE p.familyId IN (SELECT s.familyId FROM Person s WHERE s.nid=:nid)")
 				.setParameter("nid", nid).getResultList();
 	}
 	

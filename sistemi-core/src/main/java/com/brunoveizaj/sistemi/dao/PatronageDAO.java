@@ -40,7 +40,7 @@ public class PatronageDAO {
 
 	public List<PatronagePerson> getPatronagePersons(int id, int type) {
 
-		return em.createQuery("FROM PatronagePerson pp WHERE p.status=:st AND pp.patronage.id=:id AND pp.patronage.patronageType.id=:pid ORDER BY pp.id DESC")
+		return em.createQuery("FROM PatronagePerson pp WHERE pp.status=:st AND pp.patronage.id=:id AND pp.patronage.patronageType.id=:pid ORDER BY pp.id DESC")
 				.setParameter("st", IStatus.ACTIVE)
 				.setParameter("id", id)
 				.setParameter("pid", type)

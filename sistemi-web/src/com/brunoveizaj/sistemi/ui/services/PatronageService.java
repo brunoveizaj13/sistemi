@@ -17,6 +17,11 @@ public class PatronageService {
 		return new PatronageClient().registerPatronage(form);
 	}
 	
+	public PatronageDTO modifyPatronage(PatronageForm form)
+	{
+		return null;
+	}
+	
 	public PatronageDTO registerPatronageInstitution(PatronageForm form) 
 	{
 		return new PatronageClient().registerPatronageInstitution(form);

@@ -45,18 +45,18 @@
 									
 									<p:selectOneMenu placeholder="Rrethi" value="#{optgSxBean.req.regionId}" autoWidth="false" filter="true" filterMatchMode="contains">
 										<f:selectItem itemValue="#{null}" itemLabel="Rrethi"/>
-										<f:selectItems value="#{optgSxBean.regions}" var="r" itemValue="#{r.id}" itemLabel="#{r.name}" />
+										<f:selectItems value="#{cacheBean.regions}" var="r" itemValue="#{r.id}" itemLabel="#{r.name}" />
 									</p:selectOneMenu>
 									<p:selectOneMenu placeholder="Bashkia" value="#{optgSxBean.req.municipalityId}" autoWidth="false" filter="true" filterMatchMode="contains">
 										<f:selectItem itemValue="#{null}" itemLabel="Bashkia"/>
-										<f:selectItems value="#{optgSxBean.municipalities}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}" />
+										<f:selectItems value="#{cacheBean.municipalities}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}" />
 									</p:selectOneMenu>
 									<p:selectOneMenu placeholder="Njësia" value="#{optgSxBean.req.unitId}" autoWidth="false" filter="true" filterMatchMode="contains">
 										<f:selectItem itemValue="#{null}" itemLabel="Njësia"/>
-										<f:selectItems value="#{optgSxBean.units}" var="u" itemValue="#{u.id}" itemLabel="#{u.name}" />
+										<f:selectItems value="#{cacheBean.units}" var="u" itemValue="#{u.id}" itemLabel="#{u.name}" />
 									</p:selectOneMenu>
 									<p:autoComplete id="ac_entity" placeholder="Kodi Qv"
-											value="#{optgSxBean.req.qvId}" queryDelay="500"
+											value="#{optgSxBean.selectedQv}" queryDelay="500"
 											completeMethod="#{optgSxBean.searchQv}" var="q"
 											itemLabel="#{q.code}" itemValue="#{q}" >											
 											<o:converter converterId="omnifaces.ListIndexConverter" list="#{optgSxBean.qvs}" />
@@ -127,6 +127,9 @@
 						
 						<p:column headerText="#">
                                     #{r+1}
+                        </p:column>
+                        <p:column headerText="Nr Listë" sortBy="#{p.votingNo}">
+                                   <h:outputText value="#{p.votingNo}" styleClass="bold" />
                         </p:column>
 						<p:column headerText="Emri" sortBy="#{p.name}">
                                     #{p.name}
