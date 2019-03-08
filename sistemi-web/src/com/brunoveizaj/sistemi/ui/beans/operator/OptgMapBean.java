@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.map.DefaultMapModel;
@@ -15,6 +16,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 import org.primefaces.model.map.Polygon;
 
+import com.brunoveizaj.sistemi.ui.beans.application.NavBean;
 import com.brunoveizaj.sistemi.ui.constants.IMap;
 import com.brunoveizaj.sistemi.ui.constants.IPatronageType;
 import com.brunoveizaj.sistemi.ui.constants.IStatus;
@@ -47,13 +49,17 @@ import lombok.Setter;
 public class OptgMapBean implements Serializable {
 	
 	
+	@ManagedProperty(value = "#{navBean}")
+	NavBean nav;
+	
+	
 	MapModel mapModel;
 	String centerMap;
 	String zoomMap;
 	
 	
 	Set<PersonPoint> selectedEntityPoints;
-	Set<QvMap> qvs;
+	QvMap qvMap;
 	Set<BuildingMap> buildings;
 	
 	String entityCode;
@@ -65,11 +71,8 @@ public class OptgMapBean implements Serializable {
 	Set<AddressDTO> buildingAddresses;
 	List<PatronagePersonModelForm> personForms;
 	
-	
-	
-	
-	
-	
+	boolean renderBack;
+		
 	
 	
 	
@@ -77,8 +80,74 @@ public class OptgMapBean implements Serializable {
 	public void load()
 	{
 		this.centerMap = IMap.DEFAULT_CENTER;
-		this.zoomMap = "17";
+		this.zoomMap = "15";
+	}
+	
+	
+	public void init()
+	{
+		String nid = nav.getParam("nid_ptg");
+		if(StringUtil.isValid(nid))
+		{
+			renderBack = true;
+		    PatronageDTO p = new PatronageService().findPatronageByNid(nid, IPatronageType.PERSON);
+		
+			this.patronageForm = new PatronageForm();
+			patronageForm.setPatronageTypeId(IPatronageType.PERSON);
+
+			
+				if(p != null)
+				{
+					this.selectedPatronage = p;
+					this.patronageForm.setPerson(selectedPatronage.getPerson());
+					this.patronageForm.setPhone(selectedPatronage.getPerson().getPhone());
+				}
+				else
+				{
+					PersonDTO per = new PersonService().findPersonByNid(nid);
+					this.selectedPatronage = new PatronageDTO();
+					this.selectedPatronage.setPerson(per);
+					this.patronageForm.setPerson(per);;
+				}
+				
+				QvDTO qv = this.selectedPatronage.getPerson().getQv();
+				
+				qvMap = new MapService().getQvById(qv.getId());
+				
+				// Shtojme ndertesat e qv-se ne harte
+				this.buildings = new HashSet<>();
+				List<BuildingMap> buildingsMap = new MapService().getBuildingsByArea(qv.getId(), null);
+				if(buildingsMap != null && !buildingsMap.isEmpty())
+				{
+					this.buildings.addAll(buildingsMap);
+				}
+				
+				
+				// Shtojme pikat ne harte
+				this.selectedEntityPoints = new HashSet<>();
+				List<PersonPoint> points = new MapService().getPersonPointByNid(nid);
+				if(points != null && !points.isEmpty())
+				{
+					this.selectedEntityPoints.addAll(points);
+				}
+				
+				// Shenojme qendren e hartes
+				if(qvMap != null)
+				{
+					this.centerMap = new MapUtil().toMapCoord(qvMap.getCenter());
+				}
+				else if(selectedEntityPoints != null && !selectedEntityPoints.isEmpty())
+				{
+					for(PersonPoint pp : selectedEntityPoints) {
+					 this.centerMap = new MapUtil().toMapCoord(pp.getPoint());
+					 break;
+					}
+				}
+				
+		}	
+		
 		loadMap();
+		
 	}
 	
 	
@@ -163,27 +232,15 @@ public class OptgMapBean implements Serializable {
 	public void onEntitySelect()
 	{
 		MapEntity m = selectedEntity;
-		/*
-		MapEntity m = null;
 		
-		if(entities != null && !entities.isEmpty())
-		{
-			for(MapEntity me : entities)
-			{
-				if(me.getId().equals(this.entityCode))
-				{
-					m = me;
-					break;
-				}
-			}
-		}
-		*/
 		
-		this.patronageForm = new PatronageForm();
-		patronageForm.setPatronageTypeId(IPatronageType.PERSON);
+		
 		
 		if(m.getType() == 1) // person
 		{
+			this.patronageForm = new PatronageForm();
+			patronageForm.setPatronageTypeId(IPatronageType.PERSON);
+			
 			PatronageDTO p = new PatronageService().findPatronageByNid(m.getId(), IPatronageType.PERSON);
 			if(p != null)
 			{
@@ -201,27 +258,28 @@ public class OptgMapBean implements Serializable {
 			
 			QvDTO qv = this.selectedPatronage.getPerson().getQv();
 			
-			if(this.qvs == null) this.qvs = new HashSet<>();			
-			QvMap qvMap = new MapService().getQvById(qv.getId());
-			if(qvMap != null)
-			{
-				this.qvs.add(qvMap);
-			}
+			qvMap = new MapService().getQvById(qv.getId());			
 			
-			if(this.buildings == null) this.buildings = new HashSet<>();
+			this.buildings = new HashSet<>();
 			List<BuildingMap> buildingsMap = new MapService().getBuildingsByArea(qv.getId(), null);
 			if(buildingsMap != null && !buildingsMap.isEmpty())
 			{
 				this.buildings.addAll(buildingsMap);
 			}
 			
-			if(this.selectedEntityPoints == null) this.selectedEntityPoints = new HashSet<>();
+			this.selectedEntityPoints = new HashSet<>();
 			List<PersonPoint> points = new MapService().getPersonPointByNid(m.getId());
 			if(points != null && !points.isEmpty())
 			{
 				this.selectedEntityPoints.addAll(points);
 			}
-			if(selectedEntityPoints != null && !selectedEntityPoints.isEmpty())
+			
+			if(this.qvMap != null)
+			{
+				this.centerMap = new MapUtil().toMapCoord(qvMap.getCenter());
+			}
+			
+			else if(selectedEntityPoints != null && !selectedEntityPoints.isEmpty())
 			{
 				for(PersonPoint pp : selectedEntityPoints) {
 				 this.centerMap = new MapUtil().toMapCoord(pp.getPoint());
@@ -233,20 +291,20 @@ public class OptgMapBean implements Serializable {
 		
 		if(m.getType() == 2) // qv
 		{
-			QvMap qv = new MapService().getQvById(Integer.valueOf(m.getId()));
-			if(this.qvs == null) this.qvs = new HashSet<>();	
-			if(qv != null)
-			{
-			    this.qvs.add(qv);
-			}
-			if(this.buildings == null) this.buildings = new HashSet<>();
-			List<BuildingMap> maps = new MapService().getBuildingsByArea(Integer.valueOf(m.getId()), null);						
+
+	
+			this.selectedEntityPoints = null;
 			
+			qvMap = new MapService().getQvById(Integer.valueOf(m.getId()));
+
+			this.buildings = new HashSet<>();
+			List<BuildingMap> maps = new MapService().getBuildingsByArea(Integer.valueOf(m.getId()), null);						
 			if(maps != null && !maps.isEmpty())
 			{
 			   this.buildings.addAll(maps);
 			}
-			this.centerMap = new MapUtil().toMapCoord(qv.getCenter());
+			
+			this.centerMap = new MapUtil().toMapCoord(qvMap.getCenter());
 			if(!StringUtil.isValid(centerMap))
 			{
 				this.centerMap = IMap.DEFAULT_CENTER;
@@ -271,6 +329,7 @@ public class OptgMapBean implements Serializable {
 		{
 			Messages.throwFacesMessage("Patronazhisti i papercaktuar",2);
 		}
+		
 		this.mapModel = new DefaultMapModel();
         Polygon polygon = new Polygon();
         mapModel.addOverlay(polygon);
@@ -284,17 +343,15 @@ public class OptgMapBean implements Serializable {
 			}
 		}
 			
-		if(this.qvs != null && !qvs.isEmpty())
+
+		if(this.qvMap != null)
 		{
-			for(QvMap qm : qvs)
-			{
-				
-		        polygon = new MapUtil().toPolygon(qm.getShape());
+		        polygon = new MapUtil().toPolygon(qvMap.getShape());
 				if(polygon != null)
 				{
 					
-					polygon.setId(String.valueOf(qm.getQvId()));
-				//	polygon.setData(qm.getQvId());
+					polygon.setId(String.valueOf(qvMap.getQvId()));
+				//	polygon.setData(qvMap.getQvId());
 					polygon.setFillColor(IMap.QV_FILL_COLOR);
 					polygon.setFillOpacity(IMap.QV_FILL_OPACITY);
 					polygon.setStrokeColor(IMap.QV_STROKE_COLOR);
@@ -304,8 +361,8 @@ public class OptgMapBean implements Serializable {
 			        mapModel.addOverlay(polygon);
 				}
 				
-			}
-		}
+		}	
+		
 		
 		
 		if(this.buildings != null && !buildings.isEmpty())
@@ -317,7 +374,7 @@ public class OptgMapBean implements Serializable {
 				if(polygon != null)
 				{
 					polygon.setData(bm.getBuildingId());
-					if(bm.getHasData() == null && bm.getHasData() != IStatus.ACTIVE)
+					if(bm.getHasData() == null || bm.getHasData() != IStatus.ACTIVE)
 					{
 						polygon.setFillColor(IMap.BUILDING_FILL_COLOR);
 						polygon.setStrokeColor(IMap.BUILDING_STROKE_COLOR);
@@ -356,6 +413,29 @@ public class OptgMapBean implements Serializable {
 	}
 	
 	
+	public String generateMessage()
+	{
+		if(selectedPatronage == null)
+		{
+			return "<span>Ju duhet te zgjidhni me pare patronazhistin duke e kerkuar me emer mbiemer ose</span> <br/>" + 
+					"<span>te kerkoni qv-ne, te klikoni mbi ndertesen dhe me pas mbi emrin e patronazhistit </span>";
+		}
+		
+		else if(this.selectedPatronage.getId() == 0)
+		{
+			return "<span>Ju duhet te regjistroni patronazhistin e zgjedhur,</span> <br/>" + 
+					"<span>ose te kerkoni per patronazhist tjeter</span>";
+		}
+		
+		else if(this.selectedPatronage.getId() > 0)
+		{
+			return "<span>Kerkoni per banore me emer mbiemer ose</span> <br/>" + 
+					"<span>kerkoni qv-ne, te klikoni mbi ndertesen dhe me pas mbi emrin e banorit qe doni ta shtoni nen patronazh </span>";
+		}
+		
+		return null;
+		
+	}
 	
 	
 

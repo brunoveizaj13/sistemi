@@ -1,0 +1,192 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="person_view_form">
+		<f:event type="preRenderComponent" listener="#{personViewBean.init()}" />
+
+		<h:panelGroup layout="block" id="person_data">
+
+			<div class="ui-g">
+
+				<div class="ui-g-12">
+					<p:commandButton action="#{navBean.back()}" value="Mbrapa"
+						process="@this" update=":main" styleClass="green-btn"
+						icon="fa fa-arrow-left" />
+				</div>
+
+
+				<div class="ui-g-12 ui-fluid">
+					<p:messages showDetail="true" closable="true">
+						<p:autoUpdate />
+					</p:messages>
+				</div>
+
+				<div class="ui-g-12 ui-md-8 ui-fluid">
+
+					<p:panel header="Gjeneralitetet">
+
+						<div class="ui-g">
+
+							<div class="ui-g-12 ui-md-3"></div>
+
+							<div class="ui-g-12 ui-md-9">
+								<p:panelGrid layout="grid" columns="4"
+									columnClasses="bold,empty,bold,empty"
+									styleClass="ui-panelgrid-blank">
+
+									<p:outputLabel value="Emri" />
+									<p:inputText value="#{personViewBean.person.name}"
+										readonly="true" />
+									<p:outputLabel value="Mbiemri" />
+									<p:inputText value="#{personViewBean.person.surname}"
+										readonly="true" />
+
+									<p:outputLabel value="Atësia" />
+									<p:inputText value="#{personViewBean.person.fatherName}"
+										readonly="true" />
+									<p:outputLabel value="Mëmësia" />
+									<p:inputText value="#{personViewBean.person.motherName}"
+										readonly="true" />
+
+									<p:outputLabel value="Datëlindja" />
+									<p:inputText value="#{personViewBean.person.dob}"
+										readonly="true" />
+									<p:outputLabel value="Gjinia" />
+									<p:inputText value="#{personViewBean.person.gender}"
+										readonly="true" />
+
+									<p:outputLabel value="Mbiemri tjetër" />
+									<p:inputText value="#{personViewBean.person.maidenName}"
+										readonly="true" />
+									<p:outputLabel value="NID" />
+									<p:inputText value="#{personViewBean.person.nid}"
+										readonly="true" />
+
+									<p:outputLabel value="Rrethi" />
+									<p:inputText
+										value="#{personViewBean.person.qv.unit.municipality.region.name}"
+										readonly="true" />
+									<p:outputLabel value="Bashkia" />
+									<p:inputText
+										value="#{personViewBean.person.qv.unit.municipality.region.name}"
+										readonly="true" />
+									<p:outputLabel value="Nr listë" />
+									<p:inputText value="#{personViewBean.person.votingNo}"
+										readonly="true" />
+									<p:outputLabel value="Adresa QV" />
+									<p:inputTextarea
+										value="#{personViewBean.person.qv.unit.name}, QV: #{personViewBean.person.qv.code}/#{personViewBean.person.fraction}, #{personViewBean.person.qvAddress}"
+										readonly="true" />
+								</p:panelGrid>
+							</div>
+
+						</div>
+					</p:panel>
+
+				</div>
+
+				<div class="ui-g-12 ui-md-4 ui-fluid">
+					<p:dataTable var="ph" styleClass="no-border" rowIndexVar="r"
+						paginator="true" paginatorAlwaysVisible="false" rows="5"
+						rowsPerPageTemplate="5,10,20" pageLinks="2" reflow="true"
+						emptyMessage="Nuk ka patronazhiste">
+
+						<f:facet name="header">
+                    Patronazhistët e Njësisë
+                </f:facet>
+						<p:column headerText="#" style="text-align: left">
+                    #{r+1}
+                </p:column>
+						<p:column headerText="Patronazhisti" style="text-align: left">
+                    #{ph.phone}
+                </p:column>
+
+					</p:dataTable>
+				</div>
+
+
+				<div class="ui-g-12 ui-fluid">
+					<p:dataTable value="#{personViewBean.family}" var="f"
+						styleClass="blue-tbl" selection="#{personViewBean.familyMember}"
+						selectionMode="single" rowIndexVar="r" rowKey="#{f.nid}"
+						reflow="true">
+
+						<p:ajax event="rowSelect"
+							listener="#{personViewBean.onFamilySelect()}"
+							update="person_view_form:person_data" />
+
+						<f:facet name="header">
+                    Familja
+                </f:facet>
+						<p:column headerText="#">
+                    #{r+1}
+                </p:column>
+						<p:column headerText="NID">
+                    #{f.nid}
+                </p:column>
+						<p:column headerText="Emri">
+                    #{f.name} 
+                </p:column>
+						<p:column headerText="Atësia">
+                    #{f.fatherName}
+                </p:column>
+						<p:column headerText="Mbiemri">
+                    #{f.surname}
+                </p:column>
+						<p:column headerText="Datëlindja">
+                    #{f.dob}
+                </p:column>
+						<p:column headerText="L.F">
+                    #{f.familyRelation}
+                </p:column>
+						<p:column headerText="Gjinia">
+                    #{f.gender}
+                </p:column>
+					</p:dataTable>
+				</div>
+
+
+
+				<div class="ui-g-12 ui-fluid">
+					<p:dataTable value="#{personViewBean.tatime}" var="t"
+						rowIndexVar="r" reflow="true" emptyMessage="I pa punë"
+						styleClass="blue-tbl">
+
+						<f:facet name="header">
+                    Punësimi
+                </f:facet>
+						<p:column headerText="#">
+                    #{r+1}
+                </p:column>
+						<p:column headerText="NIPT">
+                    #{t.nipt}
+                </p:column>
+						<p:column headerText="Subjekti">
+							<p:commandLink value="#{t.subject}"
+								action="#{navBean.navigate('subject_view')}" update=":main">
+								<f:param name="nipt" value="#{t.nipt}" />
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="Pozicioni">
+                    #{t.profession}
+                </p:column>
+						<p:column headerText="Viti">
+                    #{t.year}
+                </p:column>
+						<p:column headerText="Muaji">
+                    #{t.month}
+                </p:column>
+					</p:dataTable>
+				</div>
+
+
+			</div>
+		</h:panelGroup>
+	</h:form>
+
+
+</ui:composition>

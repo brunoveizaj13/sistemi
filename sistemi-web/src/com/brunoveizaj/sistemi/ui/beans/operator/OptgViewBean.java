@@ -14,6 +14,7 @@ import com.brunoveizaj.sistemi.ui.forms.PatronageForm;
 import com.brunoveizaj.sistemi.ui.forms.PatronagePersonForm;
 import com.brunoveizaj.sistemi.ui.forms.PatronagePersonModelForm;
 import com.brunoveizaj.sistemi.ui.forms.PersonSx;
+import com.brunoveizaj.sistemi.ui.models.Param;
 import com.brunoveizaj.sistemi.ui.models.PatronageDTO;
 import com.brunoveizaj.sistemi.ui.models.PatronagePersonDTO;
 import com.brunoveizaj.sistemi.ui.models.PersonDTO;
@@ -222,6 +223,15 @@ public class OptgViewBean implements Serializable {
 			Messages.throwFacesMessage(e);
 		}
 	}
+	
+	public void goToMap()
+	{
+		List<Param> params = new ArrayList<>();
+		params.add(new Param("nid_ptg", selectedPatronage.getPerson().getNid()));
+		nav.navigate("ptg_map", params);
+	}
+	
+	
 	
 	
 }

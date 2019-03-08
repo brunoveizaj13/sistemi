@@ -18,6 +18,9 @@
         <h:outputScript name="js/layout.js" library="ultima-layout" />
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
         <h:outputScript name="js/swipe.js" library="ultima-layout" />
+        
+        <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC9qlw0itonOIN8FsY2LPI1yXlx5ovBHwc" />
+        
         <ui:insert name="head"/>
     </h:head>
 
@@ -30,6 +33,7 @@
 			<p:inputSwitch/>
 			<p:panel/>
 			<p:dataTable/>
+			<p:gmap center="0,0" zoom="1" type="HYBRID"/>
 		</h:form>
 	</h:panelGroup>   
         

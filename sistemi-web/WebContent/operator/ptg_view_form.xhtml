@@ -2,7 +2,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui">
 
 
 	<h:form id="ptg_view_form">
@@ -77,14 +78,14 @@
 										oncomplete="PF('addPersonWid').show();"/>
 								</div>
 								<div class="ui-g-12 ui-md-3">
-									<p:commandButton value="Shto banorë nga Harta"
+									<p:commandButton value="Shto banorë nga Harta" action="#{optgViewBean.goToMap()}" update=":main"
 										styleClass="green-btn" icon="fa fa-map" />
 								</div>
 								<div class="ui-g-12">
 
 									<p:dataTable value="#{optgViewBean.personsInPatronage}"
 										var="pp" rowIndexVar="r" styleClass="no-border"
-										paginator="true" paginatorAlwaysVisible="false" rows="20"
+										paginator="true" paginatorAlwaysVisible="false" rows="10"
 										rowsPerPageTemplate="10,15,20,30,50"
 										emptyMessage="Nuk ka asnje banore nen patronazh">
 										<f:facet name="header">Banorët nën patronazh</f:facet>

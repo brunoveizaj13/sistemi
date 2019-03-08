@@ -2,84 +2,117 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:o="http://omnifaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 
-	<h:form id="map_form" >
+	<h:form id="map_form">
 
-		<div class="ui-g ui-fluid">
-		<div class="ui-g-12">
-			<p:messages closable="true" showDetail="true">
-		    	<p:autoUpdate/>
-			</p:messages>
-		</div>
-			<div class="ui-g-12 ui-md-3">
-				<div class="card card-w-title" style="height: 98%">
-				<h3>#{optgMapBean.selectedPatronage.id gt 0?'Patronazhisti i zgjedhur':'Regjistro Patronazhistin'}</h3>
-					<div class="ui-g">
-						<div class="ui-g-12">
-							<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
-								<p:outputLabel value="Emri plotë:" styleClass="bold"/>
-								<p:inputText readonly="true" value="#{optgMapBean.patronageForm.person.name} #{optgMapBean.patronageForm.person.fatherName} #{optgMapBean.patronageForm.person.surname}"
-								 />
-								 <p:outputLabel value="Qv:" styleClass="bold"/>
-								 <p:inputText readonly="true" value="#{optgMapBean.patronageForm.person.qv.code}/#{optgMapBean.patronageForm.person.fraction}"
-								 />
-								 <p:outputLabel value="Njësia:" styleClass="bold"/>
-								 <p:inputText readonly="true" value="#{optgMapBean.patronageForm.person.qv.unit.name}"
-								 />
-								 <p:outputLabel value="Telefon:" styleClass="bold"/>
-								 <p:inputText placeholder="Shto telefon" value="#{optgMapBean.patronageForm.phone}" />
-							</p:panelGrid>
+		<f:event type="preRenderComponent" listener="#{optgMapBean.init()}" />
+
+		<h:panelGroup layout="block" id="ptg_map_data">
+
+			<div class="ui-g ">
+				<div class="ui-g-12">
+					<p:commandButton rendered="#{optgMapBean.renderBack}"
+						action="#{navBean.back()}" value="Mbrapa" process="@this"
+						update=":main" styleClass="orange-btn" icon="fa fa-arrow-left" />
+				</div>
+
+				
+
+				<div class="ui-g-12 ui-fluid">
+					<p:messages closable="true" showDetail="true">
+						<p:autoUpdate />
+					</p:messages>
+				</div>
+
+				<div class="ui-g-12 ui-md-3 ui-fluid">
+					<div class="card card-w-title" style="height: 98%">
+						<h3>#{optgMapBean.selectedPatronage.id gt 0?'Patronazhisti i
+							zgjedhur':'Regjistro Patronazhistin'}</h3>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<p:outputLabel value="Emri plotë:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgMapBean.patronageForm.person.name} #{optgMapBean.patronageForm.person.fatherName} #{optgMapBean.patronageForm.person.surname}" />
+									<p:outputLabel value="Qv:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgMapBean.patronageForm.person.qv.code}/#{optgMapBean.patronageForm.person.fraction}" />
+									<p:outputLabel value="Njësia:" styleClass="bold" />
+									<p:inputText readonly="true"
+										value="#{optgMapBean.patronageForm.person.qv.unit.name}" />
+									<p:outputLabel value="Telefon:" styleClass="bold" />
+									<p:inputText placeholder="Shto telefon"
+										value="#{optgMapBean.patronageForm.phone}" />
+								</p:panelGrid>
+							</div>
+							<div class="ui-g-12">
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<p:commandButton value="Regjistro"
+										rendered="#{optgMapBean.selectedPatronage.id eq 0}"
+										styleClass="green-btn" icon="fa fa-plus"
+										action="#{optgMapBean.registerPatronage()}"
+										update="ptg_map_data">
+										<p:confirm header="Regjistro patronazhist"
+											message="Jeni të sigurt?" />
+									</p:commandButton>
+									<p:commandButton value="Modifiko"
+										rendered="#{optgMapBean.selectedPatronage.id gt 0}"
+										icon="fa fa-edit" />
+									<p:commandButton value="Shto të ri"
+										rendered="#{optgMapBean.selectedPatronage.id gt 0}"
+										styleClass="red-btn" icon="fa fa-plus" />
+								</p:panelGrid>
+							</div>
 						</div>
-						<div class="ui-g-12">
-							<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
-							<p:commandButton value="Regjistro" rendered="#{optgMapBean.selectedPatronage.id eq 0}" styleClass="green-btn" icon="fa fa-plus"
-										     action="#{optgMapBean.registerPatronage()}" update="map_form">
-								<p:confirm header="Regjistro patronazhist" message="Jeni të sigurt?"/>
-							</p:commandButton>
-							<p:commandButton value="Modifiko" rendered="#{optgMapBean.selectedPatronage.id gt 0}" icon="fa fa-edit"/>
-							<p:commandButton value="Shto të ri" rendered="#{optgMapBean.selectedPatronage.id gt 0}" styleClass="red-btn" icon="fa fa-plus"/>
-							</p:panelGrid>
+					</div>
+				</div>
+
+				<div class="ui-g-12 ui-md-9 ui-fluid">
+					<div class="card">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-6 alert alert-success">
+								     <strong>Veprimet qe duhet te kryeni:</strong><br/>
+								     <h:outputText value="#{optgMapBean.generateMessage()}" escape="false"/>
+							</div>
+							<div class="ui-g-12 ui-md-6">
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<p:outputLabel value="Kërko person ose QV" styleClass="bold" />
+									<p:autoComplete id="ac_entity"
+										placeholder="Emër (Atësi) Mbiemër ose Kod QV"
+										value="#{optgMapBean.selectedEntity}" queryDelay="500"
+										completeMethod="#{optgMapBean.searchEntity}" var="e"
+										itemLabel="#{e.name}" itemValue="#{e}">
+
+										<o:converter converterId="omnifaces.ListIndexConverter"
+											list="#{optgMapBean.entities}" />
+
+										<p:ajax event="itemSelect"
+											listener="#{optgMapBean.onEntitySelect}"
+											update="ptg_map_data" />
+									</p:autoComplete>
+								</p:panelGrid>
+							</div>
+							<div class="ui-g-12">
+
+
+								<p:gmap model="#{optgMapBean.mapModel}"
+									center="#{optgMapBean.centerMap}" zoom="#{optgMapBean.zoomMap}"
+									type="HYBRID" style="width: 100%; height: 600px">
+									<p:ajax event="overlaySelect"
+										listener="#{optgMapBean.onOverlaySelect}" />
+								</p:gmap>
+
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			<div class="ui-g-12 ui-md-9">
-				<div class="card">
-					<div class="ui-g">
-					
-						<div class="ui-g-12">
-							<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
-								<p:outputLabel value="Kërko person ose QV" styleClass="bold"/>
-								<p:autoComplete id="ac_entity" placeholder="Emër (Atësi) Mbiemër ose Kod QV"
-											value="#{optgMapBean.selectedEntity}" queryDelay="500"
-											completeMethod="#{optgMapBean.searchEntity}" var="e"
-											itemLabel="#{e.name}" itemValue="#{e}" >
-											
-											<o:converter converterId="omnifaces.ListIndexConverter" list="#{optgMapBean.entities}" />
-	
-											<p:ajax event="itemSelect"
-												listener="#{optgMapBean.onEntitySelect}" update="map_form" />
-								</p:autoComplete>
-							</p:panelGrid>
-						</div>
-						<div class="ui-g-12">
-						
-							
-							<p:gmap model="#{optgMapBean.mapModel}" center="#{optgMapBean.centerMap}" zoom="#{optgMapBean.zoomMap}" type="HYBRID" 
-						                            	style="width: 100%; height: 600px">
-						        <p:ajax event="overlaySelect" listener="#{optgMapBean.onOverlaySelect}" />
-							</p:gmap>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		</h:panelGroup>
 	</h:form>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC9qlw0itonOIN8FsY2LPI1yXlx5ovBHwc" />
+	
 </ui:composition>

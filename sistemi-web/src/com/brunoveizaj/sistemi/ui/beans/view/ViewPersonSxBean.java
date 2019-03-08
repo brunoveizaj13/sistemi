@@ -1,4 +1,4 @@
-package com.brunoveizaj.sistemi.ui.beans.operator;
+package com.brunoveizaj.sistemi.ui.beans.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 
 import com.brunoveizaj.sistemi.ui.beans.application.NavBean;
 import com.brunoveizaj.sistemi.ui.forms.PersonSx;
@@ -24,11 +25,10 @@ import lombok.Setter;
 @ManagedBean
 @ViewScoped
 @Getter @Setter
-public class OptgSxBean implements Serializable {
+public class ViewPersonSxBean implements Serializable {
 	
 	
-	
-	@ManagedProperty(value="#{navBean}")
+	@ManagedProperty(value = "#{navBean}")
 	NavBean nav;
 	
 	boolean renderFilter;
@@ -40,7 +40,7 @@ public class OptgSxBean implements Serializable {
 	
 	List<QvDTO> qvs;
 	QvDTO selectedQv;
-
+	
 	@PostConstruct
 	public void load()
 	{
@@ -86,7 +86,9 @@ public class OptgSxBean implements Serializable {
 	{
 		try {
 			if(this.selectedQv != null)
-			{req.setQvId(selectedQv.getId());}
+			{
+				req.setQvId(selectedQv.getId());
+			}
 			this.persons = new PersonService().searchPerson(req);
 			this.selectedPerson = null;
 			
@@ -108,7 +110,7 @@ public class OptgSxBean implements Serializable {
 	{
 		List<Param> params = new ArrayList<>();
 		params.add(new Param("nid", selectedPerson.getNid()));
-		nav.navigate("ptg_view_form",params);
+		nav.navigate("person_view",params);
 	}
 	
 	public void renderFilter()
@@ -124,4 +126,6 @@ public class OptgSxBean implements Serializable {
 	}
 	
 	
+	
+
 }
