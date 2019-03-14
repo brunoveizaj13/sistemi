@@ -1,5 +1,6 @@
 package com.brunoveizaj.sistemi.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -29,7 +30,7 @@ public class AddressDAO {
 	public List<Address> getAddressByBuildingId(Integer buildingId)
 	{
 		return em.createQuery("FROM Address a WHERE a.buildingId=:bid")
-				.setParameter("bid", buildingId)
+				.setParameter("bid", BigInteger.valueOf(buildingId))
 				.getResultList();
 	}
 	

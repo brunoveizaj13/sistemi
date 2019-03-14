@@ -34,7 +34,19 @@ public class MapEntity implements Serializable {
 		this.type = 3;
 	}
 
+	public MapEntity(BuildingDTO b)
+	{
+		this.id = String.valueOf(b.getId());
+		this.name = b.getBuildingNo()+"-"+b.getBuildingCode();
+		this.type = 4;
+	}
+	
 	public MapEntity() {
+	}
+	
+	public MapEntity(String id, int type) {
+		this.id = id;
+		this.type = type;
 	}
 
 	@Override

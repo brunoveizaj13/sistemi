@@ -62,8 +62,8 @@
 									<p:commandButton value="Modifiko"
 										rendered="#{optgMapBean.selectedPatronage.id gt 0}"
 										icon="fa fa-edit" />
-									<p:commandButton value="Shto të ri"
-										rendered="#{optgMapBean.selectedPatronage.id gt 0}"
+									<p:commandButton value="Shto të ri" action="#{optgMapBean.addNewPtg()}"
+										rendered="#{optgMapBean.selectedPatronage.id gt 0}" update="ptg_map_data"
 										styleClass="red-btn" icon="fa fa-plus" />
 								</p:panelGrid>
 							</div>
@@ -75,7 +75,7 @@
 					<div class="card">
 						<div class="ui-g">
 							<div class="ui-g-12 ui-md-6 alert alert-success">
-								     <strong>Veprimet qe duhet te kryeni:</strong><br/>
+								    
 								     <h:outputText value="#{optgMapBean.generateMessage()}" escape="false"/>
 							</div>
 							<div class="ui-g-12 ui-md-6">
@@ -114,5 +114,84 @@
 			</div>
 		</h:panelGroup>
 	</h:form>
+	
+	
+	<p:dialog header="Banorët e ndërtesës" id="add_dlg" widgetVar="addWid" modal="true" responsive="true" closeOnEscape="true"
+						   width="90%" draggable="false" resizable="false" height="600px" 
+        				   appendTo="@(body)" fitViewport="true" maximizable="true">
+	
+		<h:form id="addr_form">
+		
+		<div class="ui-g ">
+		<div class="ui-g-12">
+	          	<p:messages showDetail="true" closable="true">
+	             	<p:autoUpdate/>
+	          	</p:messages>
+	          </div>
+	          <div class="ui-g-12 ui-fluid">
+	          
+	          	<p:dataTable value="#{optgMapBean.personForms}" var="p"
+						paginatorAlwaysVisible="false" paginator="true" rows="20"
+						rowIndexVar="r" rowKey="#{p.person.nid}"
+						rowsPerPageTemplate="10,20,30,50" reflow="true"
+						>
+
+						<f:facet name="header">
+							Lista personave
+						</f:facet>
+						<p:column headerText="#">
+                                    #{r+1}
+                        </p:column>
+                        <p:column headerText="Nr Listë" sortBy="#{p.person.votingNo}">
+                                   <h:outputText value="#{p.person.votingNo}" styleClass="bold" />
+                        </p:column>
+						<p:column headerText="Emri banorit" sortBy="#{p.person.name} #{p.person.surname}">
+                                    #{p.person.name} #{p.person.fatherName} #{p.person.surname}
+                        </p:column>
+						<p:column headerText="Datëlindja" sortBy="#{p.person.dob}">
+                                    #{p.person.dob}
+                        </p:column>
+						<p:column headerText="Mbiemri V" sortBy="#{p.person.maidenName}">
+                                    #{p.person.maidenName}
+                        </p:column>
+						<p:column headerText="Bashkia" sortBy="#{p.person.qv.unit.municipality.name}">
+                                    #{p.person.qv.unit.municipality.name}
+                        </p:column>
+                        <p:column headerText="Njësia" sortBy="#{p.person.qv.unit.name}">
+                                    #{p.person.qv.unit.name}
+                        </p:column>
+                        <p:column headerText="Qv" sortBy="#{p.person.qv.code}">
+                                    <h:outputText value="#{p.person.qv.code}/#{p.person.fraction}" styleClass="bold" />
+                        </p:column>
+						<p:column headerText="Familja" >
+                                    <p:selectBooleanCheckbox value="#{p.withFamily}" label="Shto bashke me familjen"/>
+                        </p:column>
+						<p:column headerText="Telefon" >
+                                    <p:inputText value="#{p.phone}"/>
+                        </p:column>
+                        <p:column headerText="" >
+                                    <p:commandButton action="#{optgMapBean.addPersonsInPatronage(p)}" rendered="#{optgMapBean.renderAddPerson()}" 
+                                      update=":map_form:ptg_map_data addr_form"
+                                      icon="fa fa-check" styleClass="pink-btn">
+                                      <p:confirm header="Shto banorin" message="Jeni të sigurt?"/>
+                                    </p:commandButton>
+                                    <p:commandButton action="#{optgMapBean.registerPatronage(p)}" rendered="#{optgMapBean.renderAddPtg()}" 
+                                      update=":map_form:ptg_map_data" oncomplete="PF('addWid').hide();"
+                                      icon="fa fa-check" styleClass="green-btn">
+                                      <p:confirm header="Regjistro Patronazhistin" message="Jeni të sigurt?"/>
+                                    </p:commandButton>
+                        </p:column>
+                        
+						
+					</p:dataTable>
+	          
+	          </div>
+		</div>
+		</h:form>
+	
+	</p:dialog>
+	
+	
+	
 	
 </ui:composition>
