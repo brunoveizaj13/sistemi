@@ -87,7 +87,6 @@ public class OptgMapBean implements Serializable {
 		this.zoomMap = "16";
 	}
 	
-	
 	public void init()
 	{
 		String nid = nav.getParam("nid_ptg");
@@ -153,7 +152,6 @@ public class OptgMapBean implements Serializable {
 		loadMap();
 		
 	}
-	
 	
 	public List<MapEntity> searchEntity(String query)
 	{
@@ -358,8 +356,6 @@ public class OptgMapBean implements Serializable {
 				
 	}
 	
-	
-	
 	public void onMarkerSelect(Marker m)
 	{
 		if(m == null) Messages.throwFacesMessage("Pika e zgjedhur nuk ka te dhena", 3);
@@ -368,8 +364,6 @@ public class OptgMapBean implements Serializable {
 		
 		
 	}
-	
-	
 	
 	public void onPolygonSelect(Polygon p)
 	{
@@ -411,7 +405,6 @@ public class OptgMapBean implements Serializable {
 		
 	}
 	
-	
 	public void addPersonsInPatronage(PatronagePersonModelForm pp)
 	{
 		try {
@@ -447,11 +440,6 @@ public class OptgMapBean implements Serializable {
 		}
 	}
 	
-	
-	
-	
-	
-	
 	public void loadMap()
 	{
 		
@@ -486,7 +474,7 @@ public class OptgMapBean implements Serializable {
 					
 					polygon.setId(String.valueOf(qvMap.getQvId()));
 					polygon.setData(new MapEntity(String.valueOf(qvMap.getQvId()),2));
-					polygon.setFillColor(IMap.QV_FILL_COLOR);
+					//polygon.setFillColor(IMap.QV_FILL_COLOR);
 					polygon.setFillOpacity(IMap.QV_FILL_OPACITY);
 					polygon.setStrokeColor(IMap.QV_STROKE_COLOR);
 					polygon.setStrokeOpacity(IMap.QV_STROKE_OPACITY);
@@ -509,7 +497,7 @@ public class OptgMapBean implements Serializable {
 				{
 					polygon.setId(String.valueOf(bm.getBuildingId()));
 					polygon.setData(new MapEntity(String.valueOf(bm.getBuildingId()),4));
-					if(bm.getHasData() == null || bm.getHasData() != IStatus.ACTIVE)
+					if(bm.getHasData() == null || (bm.getHasData() != IStatus.ACTIVE))
 					{
 						polygon.setFillColor(IMap.BUILDING_FILL_COLOR);
 						polygon.setStrokeColor(IMap.BUILDING_STROKE_COLOR);
@@ -532,7 +520,6 @@ public class OptgMapBean implements Serializable {
 		}
 				
 	}
-	
 	
 	public void registerPatronage()
 	{
@@ -565,7 +552,6 @@ public class OptgMapBean implements Serializable {
 		}
 	}
 	
-	
 	public String generateMessage()
 	{
 		if(selectedPatronage == null)
@@ -593,7 +579,6 @@ public class OptgMapBean implements Serializable {
 		
 	}
 	
-	
 	public void addNewPtg()
 	{
 		this.selectedPatronage = null;
@@ -602,7 +587,6 @@ public class OptgMapBean implements Serializable {
 		
 		loadMap();
 	}
-	
 	
 	public boolean renderAddPtg()
 	{

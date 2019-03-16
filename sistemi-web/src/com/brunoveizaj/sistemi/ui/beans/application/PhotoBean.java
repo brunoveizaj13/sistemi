@@ -13,6 +13,8 @@ import javax.faces.event.PhaseId;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import com.brunoveizaj.sistemi.ui.services.PersonService;
+import com.brunoveizaj.sistemi.ui.utils.Messages;
 import com.brunoveizaj.sistemi.ui.utils.PhotoUtil;
 import com.brunoveizaj.sistemi.ui.utils.StringUtil;
 
@@ -40,27 +42,25 @@ public class PhotoBean implements Serializable {
 		
 		try {
 						
-			String eventId = context.getExternalContext().getRequestParameterMap().get("event_id");
-			if(!StringUtil.isValid(eventId))
+			String nid = context.getExternalContext().getRequestParameterMap().get("nid");
+			if(!StringUtil.isValid(nid))
 			{
 				return new DefaultStreamedContent(new ByteArrayInputStream(imgByte));
 			}
 			
-			//BiometricDTO b = new BiometricService().findBiometric(Integer.valueOf(eventId));
-			/*
-			if(b != null )
+
+			String base64 = new PersonService().getPhotoByNid(nid);
+			if(StringUtil.isValid(base64))
 			{
-				 String base64 = null;//b.getPhoto();
-				 if(StringUtil.isValid(base64))
-				 {
-				   imgByte = Base64.getMimeDecoder().decode(base64);
-				 }
+				imgByte = Base64.getMimeDecoder().decode(base64);
 			}
-			*/
+			
+			
 			return new DefaultStreamedContent(new ByteArrayInputStream(imgByte));
 			
-		}catch(NullPointerException e)
+		}catch(Exception e)
 		{
+			Messages.throwFacesMessage(e);
 			return new DefaultStreamedContent(new ByteArrayInputStream(imgByte));
 		}
 		

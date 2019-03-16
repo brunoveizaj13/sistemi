@@ -11,6 +11,7 @@ import com.brunoveizaj.sistemi.constants.IPatronageType;
 import com.brunoveizaj.sistemi.constants.IStatus;
 import com.brunoveizaj.sistemi.dao.CrudDAO;
 import com.brunoveizaj.sistemi.dao.PatronageDAO;
+import com.brunoveizaj.sistemi.dao.UserDAO;
 import com.brunoveizaj.sistemi.entities.Building;
 import com.brunoveizaj.sistemi.entities.Institution;
 import com.brunoveizaj.sistemi.entities.Patronage;
@@ -18,6 +19,7 @@ import com.brunoveizaj.sistemi.entities.PatronagePerson;
 import com.brunoveizaj.sistemi.entities.PatronageType;
 import com.brunoveizaj.sistemi.entities.Person;
 import com.brunoveizaj.sistemi.entities.PersonDetails;
+import com.brunoveizaj.sistemi.entities.User;
 import com.brunoveizaj.sistemi.exceptions.EntityExistsException;
 import com.brunoveizaj.sistemi.exceptions.ValidationException;
 import com.brunoveizaj.sistemi.forms.PatronageForm;
@@ -31,6 +33,7 @@ public class PatronageService {
 	
 	@Autowired CrudDAO crudDAO;
 	@Autowired PatronageDAO patronageDAO;
+	@Autowired UserDAO userDAO;
 	
 	@Transactional
 	public Patronage registerPatronage(PatronageForm form, String uname)
@@ -152,6 +155,10 @@ public class PatronageService {
 	public Patronage registerPatronageInstitution(PatronageForm form, String uname)
 	{
 		
+		User u = userDAO.findByUsername(uname);
+		
+		form.setInstitutionId(u.getInstitution().getId());
+		
 		if(form.getPerson() == null)
 		{
 			throw new ValidationException("Zgjidhni personin");
@@ -163,7 +170,7 @@ public class PatronageService {
 		}
 		
 		Institution i = crudDAO.findById(Institution.class, form.getInstitutionId());
-		if(i == null || i.getStatus() != IStatus.ACTIVE)
+		if(i == null || (i.getStatus() != IStatus.ACTIVE))
 		{
 			throw new ValidationException("Perzgjidhni institucionin");
 		}
@@ -183,7 +190,7 @@ public class PatronageService {
 		
 		
 		Patronage existing = patronageDAO.findByNid(form.getPerson().getNid(), IPatronageType.INSTITUTION);
-		if(existing != null && existing.getInstitution().getId() == i.getId()) // kontrrollo a eshte regjistruar me perpara ne kete institucion si patronazhist
+		if(existing != null && (existing.getInstitution().getId() == i.getId())) // kontrrollo a eshte regjistruar me perpara ne kete institucion si patronazhist
 		{
 			throw new EntityExistsException("Personi eshte regjistruar me perpara si Patronazhist ne kete Institucion");
 		}
@@ -196,6 +203,7 @@ public class PatronageService {
 		p.setPatronageType(crudDAO.findById(PatronageType.class, IPatronageType.INSTITUTION));
 		p.setPerson(person);
 		p.setStatus(IStatus.ACTIVE);
+		p.setInstitution(i);
 		
 		return crudDAO.create(p);
 		
@@ -271,9 +279,7 @@ public class PatronageService {
 		
 		return count;
 	}
-	
-	
-	
+		
 	public List<PatronagePerson> getPatronagePersons(Integer patronageId, Integer patronageType, String uname)
 	{
 		return patronageDAO.getPatronagePersons(patronageId, patronageType);
@@ -283,5 +289,20 @@ public class PatronageService {
 	{
 		return patronageDAO.findByNid(patronageNid, patronageType);
 	}
+	
+	
+	
+	public List<PatronagePerson> getPatronagesOfPerson(String personNid, Integer patronageTypeId, String uname)
+	{
+		return patronageDAO.getPatronagesOfPerson(personNid, patronageTypeId);
+	}
+	
+	
+	public List<Patronage> getPatronagesByArea(Integer unitId, Integer qvId, Integer patronageTypeId, String uname)
+	{
+		return patronageDAO.getPatronagesByArea(unitId, qvId, patronageTypeId);
+	}
+	
+	
 	
 }

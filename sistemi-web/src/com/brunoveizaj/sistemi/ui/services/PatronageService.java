@@ -46,6 +46,19 @@ public class PatronageService {
 	{
 		return new PatronageClient().findPatronageByNid(nid, patronageType);
 	}
+
+	public List<PatronagePersonDTO> getPatronagesOfPerson(String nid, Integer patronageTypeId) {
+		
+		return new PatronageClient().getPatronagesOfPerson(nid, patronageTypeId);
+	}
+	
+	public List<PatronageDTO> getPatronagesByArea(Integer unitId, Integer qvId, Integer patronageTypeId)
+	{
+		return new PatronageClient().getPatronagesByArea(unitId, qvId, patronageTypeId);
+	}
+	
+
+	
 	
 	
 	

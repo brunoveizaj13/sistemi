@@ -29,4 +29,9 @@ public class PersonService {
 		return new PersonClient().getFamilyByNid(nid);
 	}
 
+	public String getPhotoByNid(String nid) 
+	{
+		return new PersonClient().getPhotoByNid(nid);
+	}
+
 }

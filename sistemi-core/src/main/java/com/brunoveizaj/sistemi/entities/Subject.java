@@ -97,6 +97,8 @@ public class Subject implements Serializable {
     private String streetName;
     @Column(name = "SKIP_RAPORT")
     private Integer skipRaport;
+    @Column(name = "MUNICIPALITY_ID")
+    private Integer municipalityId;
 
     
     

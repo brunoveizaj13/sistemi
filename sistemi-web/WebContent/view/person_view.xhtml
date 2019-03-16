@@ -2,7 +2,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://java.sun.com/jsf/composite/my_comp">
 
 
 	<h:form id="person_view_form">
@@ -27,15 +28,30 @@
 
 				<div class="ui-g-12 ui-md-8 ui-fluid">
 
-					<p:panel header="Gjeneralitetet">
+					<div class="card card-w-title">
+						<h2>GJENERALITETET</h2>
+
 
 						<div class="ui-g">
 
-							<div class="ui-g-12 ui-md-3"></div>
+							<div class="ui-g-12 ui-md-2">
 
-							<div class="ui-g-12 ui-md-9">
+								<p:graphicImage value="#{photoBean.photo}" width="98%"
+									cache="false">
+									<f:param name="nid" value="#{personViewBean.person.nid}" />
+								</p:graphicImage>
+								<br/>
+								
+								<p:commandButton value="Harta" styleClass="red-btn"
+											action="#{navBean.navigate('map_view')}" update=":main">
+											<f:param name="nid" value="#{personViewBean.person.nid}" />
+								</p:commandButton>
+
+							</div>
+
+							<div class="ui-g-12 ui-md-10">
 								<p:panelGrid layout="grid" columns="4"
-									columnClasses="bold,empty,bold,empty"
+									columnClasses="ui-grid-col-2 bold,ui-grid-col-4 empty,ui-grid-col-2 bold, ui-grid-col-4 empty"
 									styleClass="ui-panelgrid-blank">
 
 									<p:outputLabel value="Emri" />
@@ -59,130 +75,204 @@
 									<p:inputText value="#{personViewBean.person.gender}"
 										readonly="true" />
 
-									<p:outputLabel value="Mbiemri tjetër" />
+									<p:outputLabel value="Mb.tjetër" />
 									<p:inputText value="#{personViewBean.person.maidenName}"
 										readonly="true" />
 									<p:outputLabel value="NID" />
 									<p:inputText value="#{personViewBean.person.nid}"
 										readonly="true" />
 
+									<p:outputLabel value="Nr listë" />
+									<p:inputText value="#{personViewBean.person.votingNo}"
+										readonly="true" />
+									<p:outputLabel value="Qv" />
+									<p:inputText value="#{personViewBean.person.qv.code}/#{personViewBean.person.fraction}"
+										readonly="true" />
+									<p:outputLabel value="Njësia" />
+									<p:inputText value="#{personViewBean.person.qv.unit.name}"
+										readonly="true" />
+									<p:outputLabel value="Adresa QV" />
+									<p:inputText
+										value="#{personViewBean.person.qvAddress}"
+										readonly="true" />
+										<p:outputLabel value="Bashkia" />
+									<p:inputText
+										value="#{personViewBean.person.qv.unit.municipality.region.name}"
+										readonly="true" />
 									<p:outputLabel value="Rrethi" />
 									<p:inputText
 										value="#{personViewBean.person.qv.unit.municipality.region.name}"
 										readonly="true" />
-									<p:outputLabel value="Bashkia" />
-									<p:inputText
-										value="#{personViewBean.person.qv.unit.municipality.region.name}"
-										readonly="true" />
-									<p:outputLabel value="Nr listë" />
-									<p:inputText value="#{personViewBean.person.votingNo}"
-										readonly="true" />
-									<p:outputLabel value="Adresa QV" />
-									<p:inputTextarea
-										value="#{personViewBean.person.qv.unit.name}, QV: #{personViewBean.person.qv.code}/#{personViewBean.person.fraction}, #{personViewBean.person.qvAddress}"
-										readonly="true" />
+									
+									
+									
 								</p:panelGrid>
 							</div>
 
+							<div class="ui-g-12">
+								<s:personStatusesLabel person="#{personViewBean.person}" />
+							</div>
+
 						</div>
-					</p:panel>
+					</div>
 
 				</div>
 
 				<div class="ui-g-12 ui-md-4 ui-fluid">
-					<p:dataTable var="ph" styleClass="no-border" rowIndexVar="r"
-						paginator="true" paginatorAlwaysVisible="false" rows="5"
-						rowsPerPageTemplate="5,10,20" pageLinks="2" reflow="true"
-						emptyMessage="Nuk ka patronazhiste">
+					<div class="card card-w-title" style="height: 96%">
+						<h2>Patronazhistët e Njësisë</h2>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:dataTable value="#{personViewBean.unitPatronages}" var="up"
+									styleClass="no-border" rowIndexVar="r" paginator="true"
+									paginatorAlwaysVisible="false" rows="5"
+									rowsPerPageTemplate="5,10,20" pageLinks="2" reflow="true"
+									emptyMessage="Nuk ka patronazhiste">
 
-						<f:facet name="header">
-                    Patronazhistët e Njësisë
-                </f:facet>
-						<p:column headerText="#" style="text-align: left">
-                    #{r+1}
-                </p:column>
-						<p:column headerText="Patronazhisti" style="text-align: left">
-                    #{ph.phone}
-                </p:column>
+									<p:column headerText="#" style="text-align: left">
+					                    #{r+1}
+					                </p:column>
+									<p:column headerText="Patronazhisti" style="text-align: left">
+										<p:commandLink
+											value="#{up.person.name} #{up.person.fatherName} #{up.person.surname}"
+											action="#{navBean.navigate('person_view')}" update=":main">
+											<f:param name="nid" value="#{up.person.nid}" />
+										</p:commandLink>
+									</p:column>
 
-					</p:dataTable>
+								</p:dataTable>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ui-g-12 ui-fluid">
+					<div class="card card-w-title">
+						<h2>BANORËT NËN PATRONAZH</h2>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:dataTable value="#{personViewBean.personsInPatronage}"
+									var="pp" styleClass="no-border" rowIndexVar="r"
+									rowKey="#{pp.id}" reflow="true" rows="20" paginator="true"
+									paginatorAlwaysVisible="false"
+									rowsPerPageTemplate="10,15,20,50">
+
+									<p:column headerText="#" style="text-align: left">
+					                    #{r+1}
+					                </p:column>
+									<p:column headerText="NID" style="text-align: left">
+					                    #{pp.person.nid}
+					                </p:column>
+									<p:column headerText="Banori" style="text-align: left">
+										<p:commandLink
+											value="#{pp.person.name} #{pp.person.fatherName} #{pp.person.surname}"
+											action="#{navBean.navigate('person_view')}" update=":main">
+											<f:param name="nid" value="#{pp.person.nid}" />
+										</p:commandLink>
+									</p:column>
+									<p:column headerText="Datëlindja" style="text-align: left">
+					                    #{pp.person.dob}
+					                </p:column>
+									<p:column headerText="Qv" style="text-align: left">
+					                    #{pp.person.qv.code}/#{pp.person.fraction}
+					                </p:column>
+
+								</p:dataTable>
+							</div>
+						</div>
+					</div>
 				</div>
 
 
+
+
+
 				<div class="ui-g-12 ui-fluid">
-					<p:dataTable value="#{personViewBean.family}" var="f"
-						styleClass="blue-tbl" selection="#{personViewBean.familyMember}"
-						selectionMode="single" rowIndexVar="r" rowKey="#{f.nid}"
-						reflow="true">
+					<div class="card card-w-title">
+						<h2>FAMILJA</h2>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:dataTable value="#{personViewBean.family}" var="f"
+									styleClass="no-border"
+									selection="#{personViewBean.familyMember}"
+									selectionMode="single" rowIndexVar="r" rowKey="#{f.nid}"
+									reflow="true">
 
-						<p:ajax event="rowSelect"
-							listener="#{personViewBean.onFamilySelect()}"
-							update="person_view_form:person_data" />
+									<p:ajax event="rowSelect"
+										listener="#{personViewBean.onFamilySelect()}"
+										update="person_view_form:person_data" />
 
-						<f:facet name="header">
-                    Familja
-                </f:facet>
-						<p:column headerText="#">
+
+									<p:column headerText="#" style="text-align: left">
                     #{r+1}
                 </p:column>
-						<p:column headerText="NID">
+									<p:column headerText="NID" style="text-align: left">
                     #{f.nid}
                 </p:column>
-						<p:column headerText="Emri">
+									<p:column headerText="Emri" style="text-align: left">
                     #{f.name} 
                 </p:column>
-						<p:column headerText="Atësia">
+									<p:column headerText="Atësia" style="text-align: left">
                     #{f.fatherName}
                 </p:column>
-						<p:column headerText="Mbiemri">
+									<p:column headerText="Mbiemri" style="text-align: left">
                     #{f.surname}
                 </p:column>
-						<p:column headerText="Datëlindja">
+									<p:column headerText="Datëlindja" style="text-align: left">
                     #{f.dob}
                 </p:column>
-						<p:column headerText="L.F">
+									<p:column headerText="L.F" style="text-align: left">
                     #{f.familyRelation}
                 </p:column>
-						<p:column headerText="Gjinia">
+									<p:column headerText="Gjinia" style="text-align: left">
                     #{f.gender}
                 </p:column>
-					</p:dataTable>
+								</p:dataTable>
+							</div>
+						</div>
+					</div>
 				</div>
-
 
 
 				<div class="ui-g-12 ui-fluid">
-					<p:dataTable value="#{personViewBean.tatime}" var="t"
-						rowIndexVar="r" reflow="true" emptyMessage="I pa punë"
-						styleClass="blue-tbl">
+					<div class="card card-w-title">
+						<h2>PUNËSIMI</h2>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:dataTable value="#{personViewBean.employment}" var="t"
+									rowIndexVar="r" reflow="true" emptyMessage="I pa punë"
+									styleClass="no-border">
 
-						<f:facet name="header">
-                    Punësimi
-                </f:facet>
-						<p:column headerText="#">
+
+									<p:column headerText="#" style="text-align: left">
                     #{r+1}
                 </p:column>
-						<p:column headerText="NIPT">
+									<p:column headerText="NIPT" style="text-align: left">
                     #{t.nipt}
                 </p:column>
-						<p:column headerText="Subjekti">
-							<p:commandLink value="#{t.subject}"
-								action="#{navBean.navigate('subject_view')}" update=":main">
-								<f:param name="nipt" value="#{t.nipt}" />
-							</p:commandLink>
-						</p:column>
-						<p:column headerText="Pozicioni">
+									<p:column headerText="Subjekti" style="text-align: left">
+										<p:commandLink value="#{t.subject}"
+											action="#{navBean.navigate('subject_view')}" update=":main">
+											<f:param name="nipt" value="#{t.nipt}" />
+										</p:commandLink>
+									</p:column>
+									<p:column headerText="Pozicioni" style="text-align: left">
                     #{t.profession}
                 </p:column>
-						<p:column headerText="Viti">
+									<p:column headerText="Paga" style="text-align: left">
+                    #{t.salary}
+                </p:column>
+									<p:column headerText="Viti" style="text-align: left">
                     #{t.year}
                 </p:column>
-						<p:column headerText="Muaji">
+									<p:column headerText="Muaji" style="text-align: left">
                     #{t.month}
                 </p:column>
-					</p:dataTable>
+								</p:dataTable>
+							</div>
+						</div>
+					</div>
 				</div>
-
 
 			</div>
 		</h:panelGroup>

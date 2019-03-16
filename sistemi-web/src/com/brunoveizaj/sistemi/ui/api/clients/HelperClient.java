@@ -424,7 +424,7 @@ public class HelperClient {
 		}
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unit=" + unitId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		if(StringUtil.isValid(code))

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.brunoveizaj.sistemi.constants.IElections;
 import com.brunoveizaj.sistemi.entities.Person;
 import com.brunoveizaj.sistemi.forms.PersonSx;
+import com.brunoveizaj.sistemi.utils.CalculatorUtil;
 import com.brunoveizaj.sistemi.utils.StringUtil;
 
 
@@ -194,6 +195,26 @@ public class PersonDAO {
 		
 		return q.getResultList();
 		
+	}
+
+	public String getPhotoByNid(String nid) {
+
+		if(!StringUtil.isValid(nid)) return null;
+		
+		List<byte[]> list = em.createQuery("SELECT p.photo FROM Photo p WHERE p.nid=:nid ORDER BY p.issueDate DESC")
+				.setParameter("nid", nid.trim().toUpperCase())
+				.getResultList();
+		
+		
+		if(list != null && !list.isEmpty())
+		{
+			byte[] bytes = list.get(0);
+			
+			return CalculatorUtil.encodeBASE64(bytes);
+		}
+		
+			
+		return null;
 	}
 	
 	

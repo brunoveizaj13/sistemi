@@ -38,6 +38,13 @@ public class PersonAPI {
 		return new ResponseEntity<>(p,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/photo/{nid}", method=RequestMethod.GET, produces={"application/json"})
+	public ResponseEntity<?> getPhotoByNid(@PathVariable String nid)
+	{		
+		String base64Photo = personService.getPhotoByNid(nid);
+		return new ResponseEntity<>(base64Photo,HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/getFamilyByFamilyId/{familyId}", method=RequestMethod.GET, produces={"application/json"})
 	public ResponseEntity<?> getFamilyByFamilyId(@RequestHeader(value="Authorization") String token, @PathVariable long familyId)
 	{

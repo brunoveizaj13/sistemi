@@ -39,4 +39,8 @@ public class PersonService {
 		return personDAO.searchPerson(req);
 	}
 
+	public String getPhotoByNid(String nid) {
+		return personDAO.getPhotoByNid(nid);
+	}
+
 }

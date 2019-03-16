@@ -17,13 +17,13 @@ public class SubjectService {
 	@Autowired SubjectDAO subjectDAO;
 	
 	
-	public List<Subject> searchSubjects(SubjectSx req)
+	public List<Subject> searchSubjects(SubjectSx req, String uname)
 	{
 		return subjectDAO.searchSubject(req);
 	}
 	
 	
-	public Subject getSubjectByNipt(String nipt)
+	public Subject getSubjectByNipt(String nipt, String uname)
 	{
 		if(!StringUtil.isValid(nipt)) return null;
 		

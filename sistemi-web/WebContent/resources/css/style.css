@@ -239,5 +239,39 @@
 }
 
 
-
+.mavi {
+  background-color: #673AB7 ;
+}
+.cyan {
+  background-color: cyan ;
+}
+.red{
+    background-color: #F44336 ;
+}
+.green {
+  background-color: #1ab394;
+}
+.blue {
+  background-color: #03A9F4;
+}
+.yellow {
+  background-color: yellow;
+}
+.orange{
+    background-color: #FF5722;
+}
+.grey
+{
+    background-color: #607D8B;
+}
+.sphere {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    display: inline-block;
+  
+}
 

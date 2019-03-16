@@ -8,11 +8,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import com.brunoveizaj.sistemi.ui.beans.application.NavBean;
+import com.brunoveizaj.sistemi.ui.constants.IPatronageType;
 import com.brunoveizaj.sistemi.ui.models.EmployeeDTO;
 import com.brunoveizaj.sistemi.ui.models.PatronageDTO;
 import com.brunoveizaj.sistemi.ui.models.PatronagePersonDTO;
 import com.brunoveizaj.sistemi.ui.models.PersonDTO;
+import com.brunoveizaj.sistemi.ui.models.PoiDTO;
 import com.brunoveizaj.sistemi.ui.services.EmployeeService;
+import com.brunoveizaj.sistemi.ui.services.PatronageService;
 import com.brunoveizaj.sistemi.ui.services.PersonService;
 import com.brunoveizaj.sistemi.ui.utils.Messages;
 
@@ -29,21 +32,27 @@ public class PersonViewBean implements Serializable {
 
 	PersonDTO person;
 	List<PersonDTO> family;
-	List<EmployeeDTO> tatime;
+	List<EmployeeDTO> employment;
 	PersonDTO familyMember;
 
 	
 	
 	List<PatronageDTO> unitPatronages;
 	List<PatronagePersonDTO> personsInPatronage;
+	List<PatronagePersonDTO> personsInstInPatronage;
 	List<PatronagePersonDTO> patronagedBy;
+	List<PatronagePersonDTO> patronagedByInst;
 	
-	
+	List<PoiDTO> unitPois;
 	
 	
 	public void init() {
 		String nid = nav.getParam("nid");
 		loadPersonRaport(nid);
+		if(this.person != null)
+		{
+	    	loadFamilyRaport();
+		}
 	}
 
 	public void loadPersonRaport(String nid) {
@@ -51,9 +60,23 @@ public class PersonViewBean implements Serializable {
 
 			this.person = new PersonService().findPersonByNid(nid);
 			if (person != null) {
-				this.family = new PersonService().getFamilyByNid(nid);
 				this.familyMember = person;
-				this.tatime = new EmployeeService().getEmployment(nid);
+				this.employment = new EmployeeService().getEmployment(nid);
+				if(person.isPatronageStatus())
+				{
+				    PatronageDTO p = new PatronageService().findPatronageByNid(nid, IPatronageType.PERSON);
+				    this.personsInPatronage = new PatronageService().getPatronagePersons(p.getId(), IPatronageType.PERSON);
+				}
+				if(person.isPatronageInstitutionStatus())
+				{
+				    PatronageDTO p = new PatronageService().findPatronageByNid(nid, IPatronageType.INSTITUTION);
+				    this.personsInstInPatronage = new PatronageService().getPatronagePersons(p.getId(), IPatronageType.INSTITUTION);
+				}
+				
+				this.patronagedBy = new PatronageService().getPatronagesOfPerson(nid, IPatronageType.PERSON);
+				
+				this.patronagedByInst = new PatronageService().getPatronagesOfPerson(nid, IPatronageType.INSTITUTION);
+				
 			}
 
 		} catch (Exception e) {
@@ -64,5 +87,15 @@ public class PersonViewBean implements Serializable {
 	public void onFamilySelect() {
 		loadPersonRaport(this.familyMember.getNid());
 	}
+	
+	
+	public void loadFamilyRaport()
+	{
+		this.unitPatronages = new PatronageService().getPatronagesByArea(person.getQv().getUnit().getId(), null, IPatronageType.PERSON);
+		this.unitPois = null;
+		this.family = new PersonService().getFamilyByNid(this.person.getNid());
+	}
+	
+	
 
 }

@@ -24,7 +24,10 @@ public class MonthYear implements Serializable {
 		this.year = year;
 	}
 	
-	
+	public String full()
+	{
+		return year+","+month;
+	}
 
 
 	@Override

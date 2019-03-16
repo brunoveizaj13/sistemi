@@ -5,6 +5,8 @@
  */
 package com.brunoveizaj.sistemi.ui.models;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +16,7 @@ import lombok.Setter;
  * @author Bruno
  */
 @Getter @Setter
-public class EmployeeDTO {
+public class EmployeeDTO implements Serializable {
     
     private int id;
     private String nid;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brunoveizaj.sistemi.assemblers.Assembler;
@@ -98,5 +99,45 @@ public class PatronageAPI {
 		return new ResponseEntity<>(p,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/getPatronagesOfPerson/{nid}/{patronageType}", method=RequestMethod.GET, produces={"application/json"})
+	public ResponseEntity<?> getPatronagesOfPerson(@RequestHeader(value="Authorization") String token, @PathVariable String nid, @PathVariable Integer patronageType)
+	{
+		String uname = tokenService.getUsername(token);
+		
+		List<PatronagePersonDTO> list = new Assembler().patronagePersonListToDto(patronageService.getPatronagesOfPerson(nid, patronageType, uname));
+		
+		if(list == null || list.isEmpty())
+		{
+			return new ResponseEntity<>("Nuk ka te dhena", HttpStatus.NO_CONTENT);
+		}
+		
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 
+	@RequestMapping(value="/getPatronagesByArea", method=RequestMethod.GET, produces={"application/json"})
+	public ResponseEntity<?> getPatronagesByArea(@RequestHeader(value="Authorization") String token, 
+			@RequestParam(name="qvId", required=false) Integer qvId,
+			@RequestParam(name="unitId", required=false) Integer unitId,
+			@RequestParam(name="patronageTypeId", required=false) Integer patronageTypeId)
+	{
+		String uname = tokenService.getUsername(token);
+		
+		List<PatronageDTO> list = new Assembler().patronageListToDto(patronageService.getPatronagesByArea(unitId, qvId, patronageTypeId, uname));
+		
+		if(list == null || list.isEmpty())
+		{
+			return new ResponseEntity<>("Nuk ka te dhena", HttpStatus.NO_CONTENT);
+		}
+		
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

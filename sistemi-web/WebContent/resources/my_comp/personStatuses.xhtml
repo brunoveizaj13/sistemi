@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <composite:interface>
+        <composite:attribute name="person" type="com.brunoveizaj.sistemi.ui.models.PersonDTO" required="true" />
+    </composite:interface>
+    <composite:implementation>
+        
+        <p:graphicImage name="status-light-green.png" library="images" width="18" title="Patronazhist"
+                        rendered="#{cc.attrs.person.patronageStatus}" />
+        <p:graphicImage name="status-amber.png" library="images" width="18" title="Votues Hera e Parë"
+                        rendered="#{cc.attrs.person.firstTimeVoterStatus}" />
+        <p:graphicImage name="status-orange.png" library="images" width="18" title="Pa Votuar 2017"
+                        rendered="#{cc.attrs.person.voting2017Status}" />
+        <p:graphicImage name="status-mavi.png" library="images" width="18" title="Anëtar Partie"
+                        rendered="#{cc.attrs.person.memberStatus}" />
+        <p:graphicImage name="status-cyan.png" library="images" width="18" title="Patronazhist Institucioni"
+                        rendered="#{cc.attrs.person.patronageInstitutionStatus}" />
+        <p:graphicImage name="status-red.png" library="images" width="18" title="Patronazhist Jashtëm"
+                        rendered="#{cc.attrs.person.poiStatus}" />
+
+    </composite:implementation>
+
+
+</html>
+

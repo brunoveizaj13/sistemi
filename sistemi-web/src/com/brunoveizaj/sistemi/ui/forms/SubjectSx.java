@@ -17,6 +17,7 @@ public class SubjectSx implements Serializable {
 	String administrator;
 	String legalForm;
 	String notName;
+	Integer municipalityId;
 	Boolean skipRaport;
 	Integer firstResult;
 	Integer maxResult;

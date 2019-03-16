@@ -22,6 +22,7 @@ public class UserDTO implements Serializable {
     private String username;
     private String secret;
     private RoleDTO role;
+    private InstitutionDTO institution;
     private boolean active;
     private String name;
     private String surname;

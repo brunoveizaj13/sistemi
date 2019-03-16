@@ -218,7 +218,7 @@ public class MapDAO {
 				p.setBuildingId(((BigDecimal)o[0]).intValue());
 				p.setBuildingNo((String)o[1]);
 				p.setBuildingCode(((String)o[2]));
-				p.setHasData((Integer)o[3]);
+				p.setHasData(((BigDecimal)o[3]).intValue());
 				p.setCenter((Clob)o[4]);
 				p.setShape((Clob)o[5]);
 				

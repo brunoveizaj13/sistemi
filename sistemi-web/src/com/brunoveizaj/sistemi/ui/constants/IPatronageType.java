@@ -12,6 +12,6 @@ package com.brunoveizaj.sistemi.ui.constants;
 public interface IPatronageType {
     
     public static final int PERSON = 1;
-    public static final int INSTITUTION = 1;
+    public static final int INSTITUTION = 2;
     
 }

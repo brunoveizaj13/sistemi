@@ -172,7 +172,7 @@
 	          	</p:messages>
 	          </div>
           	  <div class="ui-g-12">
-	          		<p:dataTable value="#{optgViewBean.personForms}" var="p"
+	          		<p:dataTable value="#{optgViewBean.personForms}" var="p" styleClass="no-border" rowHover="true"
 						paginatorAlwaysVisible="false" paginator="true" rows="20"
 						rowIndexVar="r" rowKey="#{p.person.nid}"
 						rowsPerPageTemplate="10,20,30,50" reflow="true">
@@ -208,13 +208,13 @@
                                     <p:selectBooleanCheckbox value="#{p.withFamily}" label="Shto bashke me familjen"/>
                         </p:column>
 						<p:column headerText="Telefon" >
-                                    <p:inputText value="#{p.phone}"/>
+                                    <p:inputText value="#{p.phone}" styleClass="border" size="10"/>
                         </p:column>
                         <p:column headerText="" >
-                                    <p:commandButton action="#{optgViewBean.addPersonsInPatronage(p)}" update=":ptg_view_form:ptg_data"
-                                      icon="fa fa-check" styleClass="pink-btn">
+                                    <p:commandLink action="#{optgViewBean.addPersonsInPatronage(p)}" update=":ptg_view_form:ptg_data"
+                                      value="Shto" style="color: #FF1300; font-weight: bold">
                                       <p:confirm header="Shto banorin" message="Jeni të sigurt?"/>
-                                    </p:commandButton>
+                                    </p:commandLink>
                         </p:column>
                         
 						

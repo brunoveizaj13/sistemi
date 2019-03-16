@@ -45,6 +45,9 @@ public class User implements Serializable {
     @JoinColumn(name = "ROLE_CODE", referencedColumnName = "CODE")
     @ManyToOne
     private Role role;
+    @JoinColumn(name = "INSTITUTION_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Institution institution;
     @Column(name = "STATUS")
     private Integer status;
     @Size(max = 20)

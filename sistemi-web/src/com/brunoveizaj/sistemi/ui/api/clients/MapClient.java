@@ -35,6 +35,8 @@ public class MapClient {
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);	
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 				
+		System.out.println(BASE_URL);
+		
 		ParameterizedTypeReference<List<PersonPoint>> typeRef = new ParameterizedTypeReference<List<PersonPoint>>() {};
 		ResponseEntity<List<PersonPoint>> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, typeRef);
 		
@@ -60,7 +62,7 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		
@@ -70,7 +72,7 @@ public class MapClient {
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
@@ -95,7 +97,9 @@ public class MapClient {
 	public List<PersonPoint> getInPatronagePointsByPatronageNid(Integer patronageNid, Integer patronageTypeId)
 	{
 		final String BASE_URL = IApiClient.SERVER+"/api/map/getInPatronagePointsByPatronageNid/"+patronageNid+"/"+patronageTypeId;
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);	
+		
+		System.out.println(BASE_URL);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -128,7 +132,7 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		
@@ -138,7 +142,7 @@ public class MapClient {
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
@@ -174,11 +178,11 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
@@ -218,7 +222,7 @@ public class MapClient {
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
@@ -245,6 +249,10 @@ public class MapClient {
 		final String BASE_URL = IApiClient.SERVER+"/api/map/getQvById/"+qvId;
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
+		
+		System.out.println(BASE_URL);
+		
+		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer "+Util.getToken());
@@ -265,6 +273,10 @@ public class MapClient {
 	{
 		final String BASE_URL = IApiClient.SERVER+"/api/map/getQvsByUnitId/"+unitId;
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
+		
+		
+		System.out.println(BASE_URL);
+		
 		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -288,6 +300,9 @@ public class MapClient {
 	{
 		final String BASE_URL = IApiClient.SERVER+"/api/map/getUnitById/"+unitId;
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
+		
+		System.out.println(BASE_URL);
+		
 		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -319,11 +334,11 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		
@@ -359,11 +374,11 @@ public class MapClient {
 		
 		if(unitId != null)
 		{
-			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + qvId));
+			BASE_URL += ((isFirst?"?":"&") + ("unitId=" + unitId));
 			isFirst = false;
 		}
 		
-		
+		System.out.println(BASE_URL);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
 		

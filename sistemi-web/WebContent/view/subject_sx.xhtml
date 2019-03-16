@@ -5,19 +5,89 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:form id="home_form">
+	<h:form id="subject_sx_form">
 
 		<div class="ui-g ui-fluid">
 			<div class="ui-g-12">
 				<div class="card card-w-title">
-					<h1>Home</h1>
 					<div class="ui-g">
 						<div class="ui-g-12">
-							
+							<p:panelGrid layout="grid" columns="4" 
+								styleClass="ui-panelgrid-blank form-group">
+
+								<p:inputText placeholder="NIPT"
+									value="#{viewSubjectSxBean.req.nipt}" />
+								<p:inputText placeholder="Emri Subjektit"
+									value="#{viewSubjectSxBean.req.name}" />
+								<p:inputText placeholder="Administratori ose Aksioneri"
+									value="#{viewSubjectSxBean.req.administrator}" />
+								<p:selectOneMenu placeholder="Bashkia" value="#{viewSubjectSxBean.req.municipalityId}" autoWidth="false">
+									<f:selectItem value="#{null}" itemLabel="Bashkia" />
+									<f:selectItems value="#{cacheBean.municipalities}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}"/>
+								</p:selectOneMenu>
+
+							</p:panelGrid>
 						</div>
+
+						<div class="ui-g-12 ui-md-4">
+							<p:panelGrid layout="grid" columns="2"
+								styleClass="ui-panelgrid-blank">
+								<p:commandButton value="Kërko" update="@form" styleClass="blue-btn"
+									action="#{viewSubjectSxBean.search()}" icon="ui-icon-search" />
+								<p:commandButton value="Pastro" update="@form"
+									action="#{viewSubjectSxBean.clear()}" icon="ui-icon-trash"
+									styleClass="green-btn" />
+							</p:panelGrid>
+						</div>
+
+						<div class="ui-g-12">
+				<p:messages showDetail="true" closable="true">
+					<p:autoUpdate />
+				</p:messages>
+			</div>
+
 					</div>
 				</div>
+
 			</div>
+
+			
+
+			<div class="ui-g-12">
+				<p:dataTable value="#{viewSubjectSxBean.subjects}" rendered="#{not empty viewSubjectSxBean.subjects}" var="s" reflow="true"
+					rowIndexVar="r" paginator="true" paginatorAlwaysVisible="false"
+					rows="20" rowsPerPageTemplate="10,20,30,50"
+					selection="#{viewSubjectSxBean.subject}" selectionMode="single"
+					rowKey="#{s.id}">
+
+					<p:ajax event="rowSelect"
+						listener="#{viewSubjectSxBean.onSubjectSelect()}" update=":main" />
+
+					<p:column headerText="#">
+										#{r+1}
+									</p:column>
+					<p:column headerText="Nipt">
+										#{s.nipt}
+									</p:column>
+					<p:column headerText="Subjekti">
+										#{s.name}
+									</p:column>
+					<p:column headerText="Forma Ligjore">
+						#{s.legalForm}
+					</p:column>
+					<p:column headerText="Administratori">
+										#{s.administrator}
+									</p:column>
+					<p:column headerText="Dt regj">
+										#{s.registeredDate}
+									</p:column>
+					<p:column headerText="Bashkia">
+										#{s.municipality}
+									</p:column>
+
+				</p:dataTable>
+			</div>
+
 		</div>
 
 	</h:form>

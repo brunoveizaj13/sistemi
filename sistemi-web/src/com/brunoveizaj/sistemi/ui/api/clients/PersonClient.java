@@ -45,6 +45,26 @@ public class PersonClient {
 		return null;
 	}
 	
+	public String getPhotoByNid(String nid)
+	{
+		final String BASE_URL = IApiClient.SERVER+"/api/person/photo/"+nid;
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL);		
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);	
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+				
+		ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+		
+		if(response.getStatusCode() == HttpStatus.OK)
+		{
+			return response.getBody();
+		}
+				
+		return null;
+	}
+	
 	public PersonDTO findPersonByNid(String nid)
 	{
 		final String BASE_URL = IApiClient.SERVER+"/api/person/findPersonByNid/"+nid;

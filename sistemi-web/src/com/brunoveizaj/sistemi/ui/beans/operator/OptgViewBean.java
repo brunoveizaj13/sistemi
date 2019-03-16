@@ -67,7 +67,7 @@ public class OptgViewBean implements Serializable {
 				this.patronageForm = new PatronageForm();
 				patronageForm.setPerson(p);
 				patronageForm.setPhone(p.getPhone());
-
+				this.personsInPatronage = null;
 				Messages.throwFacesMessage(
 						"Regjistroni me pare personin si patronazhist, pastaj vazhdoni me shtimin e banoreve nen patronazh",
 						2);

@@ -60,7 +60,12 @@ public class SubjectDAO {
 			sql += "AND s.administrator LIKE :adm ";
 			params.put("adm", "%"+criterias.getAdministrator().trim().toUpperCase()+"%");
 		}
-					
+				
+		if(criterias.getMunicipalityId() != null)
+		{
+			sql += "AND s.municipalityId = :munid ";
+			params.put("munid", criterias.getMunicipalityId());
+		}
 			    				
 		sql += order;
 		

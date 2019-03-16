@@ -7,6 +7,8 @@ package com.brunoveizaj.sistemi.ui.models;
 
 import java.io.Serializable;
 import java.util.Date;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,7 @@ public class UserDTO implements Serializable {
     private String username;
     private String secret;
     private RoleDTO role;
+    private InstitutionDTO institution;
     private boolean active;
     private String name;
     private String surname;

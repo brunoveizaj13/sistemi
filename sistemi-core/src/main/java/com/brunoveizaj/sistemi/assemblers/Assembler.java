@@ -612,6 +612,7 @@ public AddressDTO toDto(Address e) {
 		dto.setUsername(e.getUsername());
 		dto.setSecret(e.getSecret());
 		dto.setMunicipality(e.getMunicipality());
+		dto.setInstitution(toDto(e.getInstitution()));
 		dto.setCreateUserId(e.getCreateUserId() == null?0:e.getCreateUserId().intValue());
 		dto.setModifyUserId(e.getModifyUserId() == null?0:e.getModifyUserId().intValue());
 		

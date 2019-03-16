@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="unit_stats_form">
+
+            <div class="ui-g ui-fluid">
+
+                <div class="ui-g-12">
+                    <p:panel header="Filtra">
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-8">
+                                <p:panelGrid layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" columns="4" 
+                                             styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel value="Qarku" styleClass="bold" />
+                                    <p:selectOneMenu value="#{viewerUnitStatBean.region}" autoWidth="false">
+                                        <p:ajax update="@form" listener="#{viewerUnitStatBean.onRegionSelect()}" />
+                                        <f:selectItem itemValue="#{null}" itemLabel="Gjithë Republika"/>
+                                        <f:selectItems value="#{viewerUnitStatBean.regions}" var="r" 
+                                                       itemValue="#{r}" itemLabel="#{r.name}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Bashkia" styleClass="bold" />
+                                    <p:selectOneMenu value="#{viewerUnitStatBean.municip}" autoWidth="false">
+                                        <p:ajax update="@form" listener="#{viewerUnitStatBean.onMunicipalitySelect()}" />
+                                        <f:selectItem itemValue="#{null}" itemLabel=" "/>
+                                        <f:selectItems value="#{viewerUnitStatBean.municips}" var="m" 
+                                                       itemValue="#{m}" itemLabel="#{m.name}"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Statistika Për Njësitë Administrative</h1>
+                        <div class="ui-g">
+
+                            <div class="ui-g-12">
+                                
+                                <p:dataTable value=" " emptyMessage="" >   
+                                    <p:column colspan="3" headerText="Totali" >
+                                        Gjithsej: 
+                                    </p:column>
+                                    <p:column headerText="QV">
+                                        #{viewerUnitStatBean.qv}
+                                    </p:column>
+                                    <p:column headerText="Banorë">
+                                        #{viewerUnitStatBean.banore}
+                                    </p:column>
+                                    <p:column headerText="Votues">
+                                        #{viewerUnitStatBean.votues}
+                                    </p:column>
+                                    <p:column headerText="Hera Parë">
+                                        #{viewerUnitStatBean.heraPare}
+                                    </p:column>
+                                    <p:column headerText="Pa votuar">
+                                        #{viewerUnitStatBean.paVotuar}
+                                    </p:column>
+                                    <p:column headerText="Anëtarë">
+                                        #{viewerUnitStatBean.anetare}
+                                    </p:column>
+                                    <p:column headerText="Patronazhist">
+                                        #{viewerUnitStatBean.ptzh}
+                                    </p:column>
+                                    <p:column headerText="Nën Patronazh">
+                                        #{viewerUnitStatBean.nePtzh}
+                                    </p:column>
+                                    <p:column headerText="Pa Patronazh">
+                                        #{viewerUnitStatBean.paPtzh}
+                                    </p:column>
+                                    <p:column headerText="Patr.Jasht">
+                                        #{viewerUnitStatBean.poi}
+                                    </p:column>
+                                    <p:column headerText="Patr.Inst">
+                                        #{viewerUnitStatBean.virtPtzh}
+                                    </p:column>
+                                    <p:column headerText="Nën Patr.Inst">
+                                        #{viewerUnitStatBean.neVirtPtzh}
+                                    </p:column>
+                                    
+                                </p:dataTable>
+                                
+                            </div>          
+                            
+                            <div class="ui-g-12">
+                                <h:commandLink style="float: right">
+                                            <p:graphicImage name="excel.png" library="images" width="24"/>
+                                            <p:dataExporter type="xls" target="stsTbl" fileName="statistikat_njesi" />
+                                </h:commandLink>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:dataTable id="stsTbl" value="#{viewerUnitStatBean.unitStatistics}" var="s" 
+                                             emptyMessage=""
+                                             rowKey="#{s.id}"
+                                             selection="#{viewerUnitStatBean.selectedUnit}"
+                                             selectionMode="single"
+                                             rowIndexVar="r"
+                                             reflow="true" >
+                                    <p:ajax event="rowSelect"
+                                            listener="#{viewerUnitStatBean.onUnitSelect()}"
+                                            update=":qvStatDlg"
+                                            oncomplete="PF('qvStatWid').show();"/>
+                                    
+                                    <p:column headerText="#">
+                                        <h:outputText value="#{r+1}" />
+                                    </p:column>
+                                    <p:column headerText="Njësia" footerText="Total:">
+                                        <h:outputText value="#{s.unit.name}" />
+                                    </p:column>
+                                    <p:column headerText="QV" footerText="#{viewerUnitStatBean.qv}">
+                                        <h:outputText value="#{s.qvNo}" />
+                                    </p:column>
+                                    <p:column headerText="Banorë" footerText="#{viewerUnitStatBean.banore}">
+                                        <h:outputText value="#{s.banorNo}" />
+                                    </p:column>
+                                    <p:column headerText="Votues" footerText="#{viewerUnitStatBean.votues}">
+                                        <h:outputText value="#{s.votuesNo}" />
+                                    </p:column>
+                                    <p:column headerText="Hera Parë" footerText="#{viewerUnitStatBean.heraPare}">
+                                        <h:outputText value="#{s.herePareNo}" />
+                                    </p:column>
+                                    <p:column headerText="Pa Votuar" footerText="#{viewerUnitStatBean.paVotuar}">
+                                        <h:outputText value="#{s.paVotuar2013}" />
+                                    </p:column>
+                                    <p:column headerText="Anëtarë" footerText="#{viewerUnitStatBean.anetare}">
+                                        <h:outputText value="#{s.anetareNo}" />
+                                    </p:column>
+                                    <p:column headerText="Patronazhistë" footerText="#{viewerUnitStatBean.ptzh}">
+                                        <h:outputText value="#{s.patronazhistNo}" />
+                                    </p:column>
+                                    <p:column headerText="Në Patronazh" footerText="#{viewerUnitStatBean.nePtzh}">
+                                        <h:outputText value="#{s.nePatronazhNo}" />
+                                    </p:column>
+                                    <p:column headerText="Pa Patronazh" footerText="#{viewerUnitStatBean.paPtzh}">
+                                        <h:outputText value="#{s.paPatronazhNo}" />
+                                    </p:column>
+                                    <p:column headerText="Patr.Jashtëm" footerText="#{viewerUnitStatBean.poi}">
+                                        <h:outputText value="#{s.poiNo}" />
+                                    </p:column>
+                                    <p:column headerText="Patr.Inst" footerText="#{viewerUnitStatBean.virtPtzh}">
+                                        <h:outputText value="#{s.virtualPtzhNo}" />
+                                    </p:column>
+                                    <p:column headerText="Në Patr.Inst" footerText="#{viewerUnitStatBean.neVirtPtzh}">
+                                        <h:outputText value="#{s.perInVirtualPtzhNo}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>          
+                        </div> 
+                    </div>
+                </div>
+            </div>  
+        </h:form>
+
+
+        <p:dialog header="Statistika QV" id="qvStatDlg" widgetVar="qvStatWid"
+                  responsive="true" modal="true" appendTo="@(body)">
+
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:scrollPanel style="width: 100%;height: 400px" mode="native">
+                        <p:dataTable value="#{viewerUnitStatBean.qvStatistics}" var="q" 
+                                     emptyMessage=""
+                                     rowIndexVar="r"
+                                     reflow="true" >
+                            <p:column headerText="#">
+                                <h:outputText value="#{r+1}" />
+                            </p:column>
+                            <p:column headerText="Kodi QV">
+                                <h:outputText value="#{q.qv.hartaQv.qv}" />
+                            </p:column>
+                            <p:column headerText="Banorë">
+                                #{q.banorNo}
+                            </p:column>
+                            <p:column headerText="Votues">
+                                #{q.votuesNo}
+                            </p:column>
+                            <p:column headerText="Hera Parë">
+                                #{q.herePareNo}
+                            </p:column>
+                            <p:column headerText="Pa Votuar">
+                                #{q.paVotuar2013}
+                            </p:column>
+                            <p:column headerText="Anëtarë">
+                                #{q.anetareNo}
+                            </p:column>
+                            <p:column headerText="Patronazhistë">
+                                #{q.patronazhistNo}
+                            </p:column>
+                            <p:column headerText="Në Patronazh">
+                                #{q.nePatronazhNo}
+                            </p:column>
+                            <p:column headerText="Pa Patronazh">
+                                #{q.paPatronazhNo}
+                            </p:column>
+                            <p:column headerText="Patr.Jashtëm">
+                                #{q.poiNo}
+                            </p:column>
+                            <p:column headerText="Patr.Inst">
+                                #{q.virtualPtzhNo}
+                            </p:column>
+                            <p:column headerText="Në Patr.Inst">
+                                #{q.perInVirtualPtzhNo}
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </div>          
+            </div> 
+
+        </p:dialog>
+
+
+</ui:composition>
