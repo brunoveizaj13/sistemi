@@ -126,6 +126,7 @@ public class LoginBean implements Serializable {
 		try {
 			
 			this.userToken = new UserService().login(principal);
+
 			
 			if(userToken.getUser().getRole().getCode().equals(IRole.O_PTG))
 			{

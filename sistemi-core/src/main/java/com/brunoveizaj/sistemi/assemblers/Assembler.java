@@ -16,6 +16,7 @@ import com.brunoveizaj.sistemi.dto.PatronageTypeDTO;
 import com.brunoveizaj.sistemi.dto.PersonDTO;
 import com.brunoveizaj.sistemi.dto.PoiTypeDTO;
 import com.brunoveizaj.sistemi.dto.QvDTO;
+import com.brunoveizaj.sistemi.dto.QvStatisticDTO;
 import com.brunoveizaj.sistemi.dto.RegionDTO;
 import com.brunoveizaj.sistemi.dto.RoleDTO;
 import com.brunoveizaj.sistemi.dto.SubjectDTO;
@@ -33,6 +34,7 @@ import com.brunoveizaj.sistemi.entities.PatronageType;
 import com.brunoveizaj.sistemi.entities.Person;
 import com.brunoveizaj.sistemi.entities.PoiType;
 import com.brunoveizaj.sistemi.entities.Qv;
+import com.brunoveizaj.sistemi.entities.QvStatistic;
 import com.brunoveizaj.sistemi.entities.Region;
 import com.brunoveizaj.sistemi.entities.Role;
 import com.brunoveizaj.sistemi.entities.Subject;
@@ -634,6 +636,52 @@ public AddressDTO toDto(Address e) {
 		return list;
 		
 	}
+	
+	
+	public QvStatisticDTO toDto(QvStatistic e) {
+
+		if(e == null) return null;
+		
+		QvStatisticDTO dto = new QvStatisticDTO();
+		
+		dto.setCode(e.getCode());
+		dto.setId(e.getId().intValue());
+		dto.setUnit(toDto(e.getUnit()));
+		dto.setFirstTime(e.getFirstTime());
+		dto.setInInstPatronages(e.getInInstPatronages());
+		dto.setInPatronages(e.getInPatronages());
+		dto.setMembers(e.getMembers());
+		dto.setNoVoting(e.getNoVoting());
+		dto.setPatronages(e.getPatronages());
+		dto.setPersons(e.getPersons());
+		dto.setPois(e.getPois());
+		dto.setVoters(e.getVoters());
+		
+		return dto;
+		
+	}
+	
+	public List<QvStatisticDTO> qvStatsListToDto(List<QvStatistic> data)
+	{
+		if(data == null || data.isEmpty()) return null;
+		
+		List<QvStatisticDTO> list = new ArrayList<>();
+		
+		for(QvStatistic i : data)
+		{
+			list.add(toDto(i));
+		}
+		
+		return list;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	
   
 

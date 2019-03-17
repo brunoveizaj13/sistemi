@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.brunoveizaj.sistemi.constants.IPatronageType;
 import com.brunoveizaj.sistemi.constants.IStatus;
 import com.brunoveizaj.sistemi.entities.Person;
+import com.brunoveizaj.sistemi.entities.QvStatistic;
 
 @Repository
 @SuppressWarnings("unchecked")
@@ -69,6 +70,19 @@ public class QvStatsDAO {
 				.setParameter("st", IStatus.ACTIVE)
 				.getResultList();
 	}
+	
+	
+	public List<QvStatistic> getUnitQvStatistics(Integer unitId)
+	{
+		return em.createQuery("FROM QvStatistic s join fetch s.unit u WHERE u.id=:uid ORDER BY u.name,s.code")
+				.setParameter("uid", unitId)
+				.getResultList();
+	}
+	
+	
+	
+	
+	
 	
 	
 	

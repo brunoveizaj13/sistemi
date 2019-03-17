@@ -17,9 +17,7 @@ public class ApiErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-    	
-    	System.out.println("Response Code "+response.getStatusCode().value());
-    	    	
+    	    	    	
     	if(response.getBody() != null)
     	{
     	   InputStream is = response.getBody();
