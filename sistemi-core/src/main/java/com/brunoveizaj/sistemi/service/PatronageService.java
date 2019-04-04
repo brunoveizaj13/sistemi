@@ -19,6 +19,7 @@ import com.brunoveizaj.sistemi.entities.PatronagePerson;
 import com.brunoveizaj.sistemi.entities.PatronageType;
 import com.brunoveizaj.sistemi.entities.Person;
 import com.brunoveizaj.sistemi.entities.PersonDetails;
+import com.brunoveizaj.sistemi.entities.QvStatistic;
 import com.brunoveizaj.sistemi.entities.User;
 import com.brunoveizaj.sistemi.exceptions.EntityExistsException;
 import com.brunoveizaj.sistemi.exceptions.ValidationException;
@@ -77,7 +78,9 @@ public class PatronageService {
 		p.setPerson(person);
 		p.setStatus(IStatus.ACTIVE);
 		
-		return crudDAO.create(p);
+		p = crudDAO.create(p);
+		updateQvStats(p);
+		return p;
 		
 				
 	}
@@ -141,7 +144,7 @@ public class PatronageService {
 				pp.setStatus(IStatus.ACTIVE);
 				pp.setPerson(person);
 				crudDAO.create(pp);
-				
+				updateQvStats(person);
 				count++;
 			}
 			
@@ -204,8 +207,10 @@ public class PatronageService {
 		p.setPerson(person);
 		p.setStatus(IStatus.ACTIVE);
 		p.setInstitution(i);
+		p = crudDAO.create(p);
 		
-		return crudDAO.create(p);
+		updateQvStats(p);
+		return p;
 		
 				
 	}
@@ -270,7 +275,7 @@ public class PatronageService {
 				pp.setStatus(IStatus.ACTIVE);
 				pp.setPerson(person);
 				crudDAO.create(pp);
-				
+				updateInstStats(person);
 				count++;
 			}
 			
@@ -301,6 +306,55 @@ public class PatronageService {
 	public List<Patronage> getPatronagesByArea(Integer unitId, Integer qvId, Integer patronageTypeId, String uname)
 	{
 		return patronageDAO.getPatronagesByArea(unitId, qvId, patronageTypeId);
+	}
+	
+	@Transactional
+	public void updateQvStats(Patronage p)
+	{
+		
+		QvStatistic qv = crudDAO.findById(QvStatistic.class, p.getPerson().getQv().getId());
+		
+		if(p.getPatronageType().getId() == IPatronageType.PERSON)
+		{
+			int current = qv.getPatronages();
+			current++;
+			qv.setPatronages(current);
+		}
+		else
+		{
+			int current = qv.getInstPatronages();
+			current++;
+			qv.setInstPatronages(current);
+		}
+		crudDAO.update(qv);
+		
+		
+	}
+	
+	@Transactional
+	public void updateQvStats(Person p)
+	{
+		QvStatistic qv = crudDAO.findById(QvStatistic.class, p.getQv().getId());
+		
+		int current = qv.getInPatronages();
+		current++;
+		qv.setInPatronages(current);
+		crudDAO.update(qv);
+		
+		
+	}
+	
+	@Transactional
+	public void updateInstStats(Person p)
+	{
+		QvStatistic qv = crudDAO.findById(QvStatistic.class, p.getQv().getId());
+		
+		int current = qv.getInInstPatronages();
+		current++;
+		qv.setInInstPatronages(current);
+		crudDAO.update(qv);
+		
+		
 	}
 	
 	

@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-1">
+                    <h1>BANORË</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.persons}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-blue.svg" library="apollo-layout"/>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-2">
+                    <h1>VOTUES</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.voters}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                        <div class="overview-ratio-value">
+                            #{formatBean.formatPrc(viewDashboardBean.municipStat.voters,viewDashboardBean.municipStat.persons)}
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-green.svg" library="apollo-layout"/>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-3">
+                    <h1>HERA PARË</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.firstTime}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                        <div class="overview-ratio-value">
+                            #{formatBean.formatPrc(viewDashboardBean.municipStat.firstTime,viewDashboardBean.municipStat.voters)}
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-yellow.svg" library="apollo-layout"/>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-4">
+                    <h1>PA VOTUAR 2017</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.noVoting}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                        <div class="overview-ratio-value">
+                            #{formatBean.formatPrc(viewDashboardBean.municipStat.noVoting,viewDashboardBean.municipStat.voters)}
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-red.svg" library="apollo-layout"/>
+                </div>
+            </div>
+			<div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-2">
+                    <h1>ANËTARË</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.members}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                        <div class="overview-ratio-value">
+                            #{formatBean.formatPrc(viewDashboardBean.municipStat.members,viewDashboardBean.municipStat.voters)}
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-green.svg" library="apollo-layout"/>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-fluid">
+                <div class="overview-box overview-box-1">
+                    <h1>ME INFLUENCË</h1>
+                    <div class="overview-value">#{viewDashboardBean.municipStat.pois}</div>
+                    <div class="overview-ratio">
+                        <div class="overview-direction">
+                            <i class="fa fa-arrow-up" />
+                        </div>
+                        <div class="overview-ratio-value">
+                            #{formatBean.formatPrc(viewDashboardBean.municipStat.pois,viewDashboardBean.municipStat.voters)}
+                        </div>
+                    </div>
+                    <p:graphicImage name="images/dashboard/graph-green.svg" library="apollo-layout"/>
+                </div>
+            </div>
+            
+            <div class="ui-g-12 ui-fluid">
+                <p:panel header="Patronazhimi" styleClass="knobs">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-lg-3 ui-md-6 knob-users">
+                            <div class="knob-title">Patronazhistë</div>
+                            <p:knob foregroundColor="#6ebc3b" 
+                            backgroundColor="rgba(0,0,0,.3)" 
+                            value="#{viewDashboardBean.municipStat.patronages}" height="150" width="150" widgetVar="knob1" thickness=".1"/>
+                            <i class="fa fa-user" />
+                        </div>
+                        <div class="ui-g-12 ui-lg-3 ui-md-6 knob-mobile">
+                            <div class="knob-title">Të patronazhuar</div>
+                            <p:knob foregroundColor="#f6a821" backgroundColor="rgba(0,0,0,.3)" 
+                            value="#{viewDashboardBean.municipStat.inPatronages}" height="150" width="150" widgetVar="knob2" thickness=".1"/>
+                            <i class="fa fa-users" />
+                        </div>
+                        <div class="ui-g-12 ui-lg-3 ui-md-6 knob-pageviews">
+                            <div class="knob-title">Patronazhist institucioni</div>
+                            <p:knob foregroundColor="#039ADE" backgroundColor="rgba(0,0,0,.3)" 
+                            value="#{viewDashboardBean.municipStat.instPatronages}" height="150" width="150" widgetVar="knob3" thickness=".1"/>
+                            <i class="fa fa-building" />
+                        </div>
+                        <div class="ui-g-12 ui-lg-3 ui-md-6 knob-sales">
+                            <div class="knob-title" style="color:#d66351">Të patronazhuar inst</div>
+                            <p:knob foregroundColor="#d66351" backgroundColor="rgba(0,0,0,.3)" 
+                            value="#{viewDashboardBean.municipStat.inInstPatronages}" height="150" width="150" widgetVar="knob4" thickness=".1"/>
+                            <i class="fa fa-plus" />
+                        </div>
+                    </div>
+                </p:panel>
+            </div>
+
+        
+
+
+</ui:composition>

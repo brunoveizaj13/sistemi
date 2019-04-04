@@ -1,0 +1,37 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/apollo">
+
+    <div class="layout-menu-container">
+        <div class="nano">
+            <div class="nano-content menu-scroll-content">
+                <div class="layout-menu-title">MENU</div>
+                <h:form id="menuform">
+                    <pa:menu>
+                        <p:menuitem id="v_home" value="Dashboard" icon="fa fa-dashboard" actionListener="#{menuBean.navigate('dashboard','view')}"/>
+                   	    <p:menuitem id="v_person" value="Banorët" icon="fa fa-users" actionListener="#{menuBean.navigate('person_sx','view')}"/>
+                   	    <p:menuitem id="v_municips" value="Bashkitë" icon="fa fa-dot-circle-o" actionListener="#{menuBean.navigate('municipalities','view')}"/>
+                   	    <p:menuitem id="v_subject" value="Subjektet" icon="fa fa-building" actionListener="#{menuBean.navigate('subject_sx','view')}"/>
+                   	    <p:menuitem id="v_map" value="Harta" icon="fa fa-map" actionListener="#{menuBean.navigate('map_view','view')}"/>
+ 						<p:menuitem id="v_qv_stats" value="Raporte QV" icon="fa fa-circle-o" actionListener="#{menuBean.navigate('qv_stats','view')}"/>
+ 						<p:menuitem id="v_unit_stats" value="Statistika Njësi" icon="fa fa-object-group" actionListener="#{menuBean.navigate('unit_stats','view')}"/>
+ 						<p:menuitem id="v_inst_stats" value="Statistika Institucione" icon="fa fa-pie-chart" actionListener="#{menuBean.navigate('institution_stats','view')}"/>
+ 						<p:menuitem id="v_party_structure" value="Struktura Partisë" icon="fa fa-sitemap" actionListener="#{menuBean.navigate('party_structure','view')}"/>
+ 						
+                    </pa:menu>
+
+                    
+
+                </h:form>
+                
+                <div class="nano-scroll-footer" />
+            </div>
+        </div>
+    </div>
+
+
+</ui:composition>

@@ -9,6 +9,8 @@ public class IElections {
 	
 	public static Date ELECTIONS_DATE;
 	
+	
+	public IElections()
 	{
 		try {
 			this.ELECTIONS_DATE = new SimpleDateFormat("yyyyMMdd").parse("20190630");

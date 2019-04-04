@@ -7,12 +7,20 @@ import org.springframework.stereotype.Service;
 
 import com.brunoveizaj.sistemi.dao.EmployeeDAO;
 import com.brunoveizaj.sistemi.entities.Employee;
+import com.brunoveizaj.sistemi.entities.EmploymentPeriod;
 import com.brunoveizaj.sistemi.forms.EmployeeSx;
 
 @Service
 public class EmployeeService {
 
 	@Autowired EmployeeDAO employeeDAO;
+	
+	
+	
+	public List<EmploymentPeriod> getEmploymentPeriods(String nid, String uname)
+	{
+		return employeeDAO.getEmploymentPeriods(nid);
+	}
 	
 	public List<Employee> getEmployment(String nid, String uname)
 	{

@@ -14,7 +14,7 @@ import org.springframework.web.util.WebUtils;
 @ControllerAdvice
 public class ApiExceptionHandler {
 	
-    @ExceptionHandler//({ ValidationException.class, InvalidTokenException.class })
+    @ExceptionHandler({ ValidationException.class, InvalidTokenException.class, EntityExistsException.class, Exception.class })
     public final ResponseEntity<?> handleException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         

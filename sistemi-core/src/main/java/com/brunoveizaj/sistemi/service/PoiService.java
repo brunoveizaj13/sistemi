@@ -15,6 +15,7 @@ import com.brunoveizaj.sistemi.entities.PersonDetails;
 import com.brunoveizaj.sistemi.entities.Poi;
 import com.brunoveizaj.sistemi.entities.PoiType;
 import com.brunoveizaj.sistemi.entities.Qv;
+import com.brunoveizaj.sistemi.entities.QvStatistic;
 import com.brunoveizaj.sistemi.entities.Region;
 import com.brunoveizaj.sistemi.entities.Unit;
 import com.brunoveizaj.sistemi.exceptions.ValidationException;
@@ -88,11 +89,23 @@ public class PoiService {
 		{
 			poi.setRegion(crudDAO.findById(Region.class, form.getRegionId()));
 		}
-		
-		return crudDAO.create(poi);
+		poi = crudDAO.create(poi);
+		updateQvStats(poi);
+		return poi;
 		
 	}
 	
-	
+	@Transactional
+	public void updateQvStats(Poi p)
+	{
+		QvStatistic qv = crudDAO.findById(QvStatistic.class, p.getPerson().getQv().getId());
+		
+		int current = qv.getPois();
+		current++;
+		qv.setPois(current);
+		crudDAO.update(qv);
+		
+		
+	}
 	
 }

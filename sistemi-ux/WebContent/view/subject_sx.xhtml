@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="subject_sx_form">
+
+		<f:event type="preRenderComponent"
+			listener="#{viewSubjectSxBean.init()}" />
+
+		<h:panelGroup layout="block" id="subject_sx">
+			<div class="ui-g ">
+				<div class="ui-g-12">
+					<p:commandButton action="#{navBean.back()}" value="Mbrapa" rendered="#{viewSubjectSxBean.renderBack}"
+						process="@this" update=":main" styleClass="orange-btn"
+						icon="fa fa-arrow-left" />
+				</div>
+				<div class="ui-g-12 ui-fluid">
+					<div class="card card-w-title">
+						<h1>Kërko subjekte</h1>
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<p:panelGrid layout="grid" columns="4"
+									styleClass="ui-panelgrid-blank form-group">
+
+									<p:inputText placeholder="NIPT"
+										value="#{viewSubjectSxBean.req.nipt}" />
+									<p:inputText placeholder="Emri Subjektit"
+										value="#{viewSubjectSxBean.req.name}" />
+									<p:inputText placeholder="Administratori ose Aksioneri"
+										value="#{viewSubjectSxBean.req.administrator}" />
+									<p:selectOneMenu placeholder="Bashkia"
+										value="#{viewSubjectSxBean.req.municipalityId}"
+										autoWidth="false">
+										<f:selectItem itemValue="#{null}" itemLabel="Bashkia" />
+										<f:selectItems value="#{cacheBean.municipalities}" var="m"
+											itemValue="#{m.id}" itemLabel="#{m.name}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu placeholder="Tipi Biznesit"
+										value="#{viewSubjectSxBean.onlyAdministrate}"
+										autoWidth="false">
+										<f:selectItem itemValue="#{null}" itemLabel="Të gjithë" />
+										<f:selectItem itemValue="true" itemLabel="Administratë" />
+									</p:selectOneMenu>
+
+								</p:panelGrid>
+							</div>
+
+							<div class="ui-g-12 ui-md-4">
+								<p:panelGrid layout="grid" columns="2"
+									styleClass="ui-panelgrid-blank">
+									<p:commandButton value="Kërko" update="@form:subject_sx"
+										styleClass="blue-btn" action="#{viewSubjectSxBean.search()}"
+										icon="ui-icon-search" />
+									<p:commandButton value="Pastro" update="@form:subject_sx"
+										action="#{viewSubjectSxBean.clear()}" icon="ui-icon-trash"
+										styleClass="green-btn" />
+								</p:panelGrid>
+							</div>
+
+							<div class="ui-g-12">
+								<p:messages showDetail="true" closable="true">
+									<p:autoUpdate />
+								</p:messages>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+
+				<div class="ui-g-12 ui-fluid">
+					<p:dataTable value="#{viewSubjectSxBean.subjects}"
+						rendered="#{not empty viewSubjectSxBean.subjects}" var="s"
+						reflow="true" rowIndexVar="r" paginator="true"
+						paginatorAlwaysVisible="false" rows="20"
+						rowsPerPageTemplate="10,20,30,50"
+						selection="#{viewSubjectSxBean.subject}" selectionMode="single"
+						rowKey="#{s.id}">
+
+						<p:ajax event="rowSelect"
+							listener="#{viewSubjectSxBean.onSubjectSelect()}" update=":main" />
+
+						<p:column headerText="#">
+										#{r+1}
+									</p:column>
+						<p:column headerText="Nipt" filterMatchMode="contains" filterBy="#{s.nipt}">
+										#{s.nipt}
+									</p:column>
+						<p:column headerText="Subjekti" filterMatchMode="contains" filterBy="#{s.name}">
+										#{s.name}
+									</p:column>
+						<p:column headerText="Forma Ligjore" filterMatchMode="contains" filterBy="#{s.legalForm}">
+						#{s.legalForm}
+					</p:column>
+						<p:column headerText="Administratori" filterMatchMode="contains" filterBy="#{s.administrator}">
+										#{s.administrator}
+									</p:column>
+						<p:column headerText="Dt regj" filterMatchMode="contains" filterBy="#{s.registeredDate}">
+										#{s.registeredDate}
+									</p:column>
+						<p:column headerText="Bashkia" filterMatchMode="contains" filterBy="#{s.municipality}">
+										#{s.municipality}
+									</p:column>
+						<p:column headerText="Statusi" filterMatchMode="contains" filterBy="#{s.status}">
+										#{s.status}
+									</p:column>
+
+					</p:dataTable>
+				</div>
+
+			</div>
+		</h:panelGroup>
+	</h:form>
+
+</ui:composition>

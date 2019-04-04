@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.brunoveizaj.sistemi.constants.IStatus;
 import com.brunoveizaj.sistemi.entities.Subject;
 import com.brunoveizaj.sistemi.forms.SubjectSx;
 import com.brunoveizaj.sistemi.utils.StringUtil;
@@ -52,7 +53,7 @@ public class SubjectDAO {
 		if(StringUtil.isValid(criterias.getLegalForm()))
 		{
 			sql += "AND s.legalForm LIKE :lf ";
-			params.put("name", criterias.getName().trim().toUpperCase());
+			params.put("lf", criterias.getLegalForm().trim().toUpperCase());
 		}
 		
 		if(StringUtil.isValid(criterias.getAdministrator()))
@@ -65,6 +66,13 @@ public class SubjectDAO {
 		{
 			sql += "AND s.municipalityId = :munid ";
 			params.put("munid", criterias.getMunicipalityId());
+		}
+		if(criterias.getSkipRaport() != null)
+		{
+			sql += "AND s.skipRaport = :srp ";
+			params.put("srp", criterias.getSkipRaport().booleanValue()?IStatus.ACTIVE:IStatus.NOT_ACTIVE);
+			sql += "AND s.status = :sub_st ";
+			params.put("sub_st", "AKTIV");
 		}
 			    				
 		sql += order;

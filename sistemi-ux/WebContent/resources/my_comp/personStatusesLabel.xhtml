@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <composite:interface>
+        <composite:attribute name="person" type="com.brunoveizaj.sistemi.ui.models.PersonDTO" required="true" />
+    </composite:interface>
+    <composite:implementation>
+        <p:panelGrid layout="grid" columns="8" styleClass="ui-panelgrid-blank">
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-mavi.png" library="images" width="18"
+                            rendered="#{cc.attrs.person.memberStatus}" />
+            <p:outputLabel value=" - Anëtar Partie" rendered="#{cc.attrs.person.memberStatus}"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-light-green.png" library="images" width="18" 
+                            rendered="#{cc.attrs.person.patronageStatus}" />
+            <p:outputLabel value=" - Patronazhist" rendered="#{cc.attrs.person.patronageStatus}"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-red.png" library="images" width="18" 
+                            rendered="#{cc.attrs.person.poiStatus}" />
+            <p:outputLabel value=" - Patronazhist i Jashtëm" rendered="#{cc.attrs.person.poiStatus}" />
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-cyan.png" library="images" width="18" 
+                            rendered="#{cc.attrs.person.patronageInstitutionStatus}" />
+            <p:outputLabel value=" - Patronazhist Institucioni" rendered="#{cc.attrs.person.patronageInstitutionStatus}" />
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-amber.png" library="images" width="18"
+                            rendered="#{cc.attrs.person.firstTimeVoterStatus}" /> 
+            <p:outputLabel value=" - Votues Hera Parë" rendered="#{cc.attrs.person.firstTimeVoterStatus}"/>     
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+            <p:graphicImage name="status-orange.png" library="images" width="18"
+                            rendered="#{cc.attrs.person.voting2017Status}" /> 
+            <p:outputLabel value=" - Pa Votuar 2017" rendered="#{cc.attrs.person.voting2017Status}"/>
+            </h:panelGrid>
+            
+        </p:panelGrid>    
+
+    </composite:implementation>
+
+
+</html>
+

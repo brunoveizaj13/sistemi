@@ -1,0 +1,234 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://java.sun.com/jsf/composite/my_comp">
+
+<h:form id="qv_stats_form">
+<f:event type="preRenderComponent"
+			listener="#{viewQvStatBean.init()}" />
+
+		<h:panelGroup layout="block" id="qv_stats">
+            <div class="ui-g ">
+
+				<div class="ui-g-12">
+					<p:commandButton action="#{navBean.back()}" value="Mbrapa" rendered="#{viewQvStatBean.renderBack}"
+						process="@this" update=":main" styleClass="orange-btn"
+						icon="fa fa-arrow-left" />
+				</div>
+
+
+                <div class="ui-g-12 ui-fluid">
+                    <div class="card card-w-title">
+				<h1>Raport Sipas QV</h1>
+					<div class="ui-g">
+						<div class="ui-g-12">
+
+                        <p:panelGrid layout="grid" columns="4" styleClass="ui-panelgrid-blank">
+
+                            <p:selectOneMenu value="#{viewQvStatBean.regionId}" autoWidth="false">
+                                <p:ajax update="mun unit qv" listener="#{viewQvStatBean.onRegionSelect()}" />
+                                <f:selectItem itemValue="#{null}" itemLabel="Qarku"/>
+                                <f:selectItems value="#{cacheBean.regions}" var="r" 
+                                               itemValue="#{r.id}" itemLabel="#{r.name}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:selectOneMenu id="mun" value="#{viewQvStatBean.municipId}" autoWidth="false">
+                                <p:ajax update="unit qv" listener="#{viewQvStatBean.onMunicipalitySelect()}" />
+                                <f:selectItem itemValue="#{null}" itemLabel="Bashkia"/>
+                                <f:selectItems value="#{cacheBean.loadMunicipalities(viewQvStatBean.regionId,false)}" var="m" 
+                                               itemValue="#{m.id}" itemLabel="#{m.name}"/>
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="unit" value="#{viewQvStatBean.unitId}" autoWidth="false" >
+                                <p:ajax update="qv" listener="#{viewQvStatBean.onUnitSelect()}" />
+                                <f:selectItem itemValue="#{null}" itemLabel="Nj.Administrative"/>
+                                <f:selectItems value="#{cacheBean.loadUnits(viewQvStatBean.municipId,false)}" var="u" 
+                                               itemValue="#{u.id}" itemLabel="#{u.name}"/>
+                            </p:selectOneMenu>
+                            <p:selectOneMenu id="qv" value="#{viewQvStatBean.qvId}" autoWidth="false"
+                                             filter="true">
+                                <p:ajax update="mapBtn"/>
+                                <f:selectItem itemValue="#{null}" itemLabel="Kodi Qv"/>
+                                <f:selectItems value="#{viewQvStatBean.qvs}" var="q" 
+                                               itemValue="#{q.id}" itemLabel="#{q.code}"/>
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-fluid">
+                    <p:panelGrid layout="grid" columns="4" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="Votues" styleClass="blue-btn" update="@form" process="@this"
+                                         action="#{viewQvStatBean.listPersons()}" />
+                        <p:commandButton value="Hera Parë" update="@form" process="@this"
+                                         styleClass="green-btn"
+                                         action="#{viewQvStatBean.listFirstTimeVoters()}" />
+                        <p:commandButton value="Pa Votuar 2017" update="@form" process="@this"
+                                         styleClass="purple-btn"
+                                         action="#{viewQvStatBean.listNotVoting()}" />
+                        <p:commandButton value="Patronazhist" update="@form" process="@this"
+                                         styleClass="cyan-btn"
+                                         action="#{viewQvStatBean.listPatronage()}" />
+                                         
+                        <p:commandButton value="Nën Patronazh" update="@form" process="@this"
+                                         styleClass="red-btn"
+                                         action="#{viewQvStatBean.listInPatronage()}" />
+                        <p:commandButton value="Pa Patronazhist" update="@form" process="@this"
+                                         styleClass="yellow-btn"
+                                         action="#{viewQvStatBean.listNotInPatronage()}" />
+                        <p:splitButton value="Institucionet" 
+                                       styleClass="indigo-btn" >
+                            <p:menuitem value="Patronazhistë" action="#{viewQvStatBean.listInstPatronage()}" 
+                                        update="@form" process="@this" icon="ui-icon-person" />
+                            <p:menuitem value="Nën Patronazh" action="#{viewQvStatBean.listInInstitutionPatronage()}" 
+                                        update="@form" process="@this" icon="ui-icon-group" />
+                        </p:splitButton>
+                        <p:commandButton styleClass="orange-btn" value="Harta" id="mapBtn" disabled="#{viewQvStatBean.qvId == null}" 
+                        action="#{navBean.navigate('map_view')}" update=":main" >
+								<f:param name="qv_id" value="#{viewQvStatBean.qvId}" />
+                        </p:commandButton> 
+                    </p:panelGrid>
+                </div>
+
+                <h:panelGroup layout="block" rendered="#{viewQvStatBean.qvId != null}" >
+                    <div class="ui-g-12 ui-fluid">
+
+<p:fieldset legend="Përmbledhja e Qv-së">
+                        <p:outputLabel value="Banues: " styleClass="bold" />
+                        <p:outputLabel value="#{viewQvStatBean.stats.persons}" style="margin-left: 5px" />
+                        <p:outputLabel value="Votues: " styleClass="bold" style="margin-left: 20px" />
+                        <p:outputLabel value="#{viewQvStatBean.stats.voters}"  style="margin-left: 5px"/>
+                        <p:outputLabel value="Votues Hera e Parë: " styleClass="bold" style="margin-left: 20px"  />
+                        <p:outputLabel value="#{viewQvStatBean.stats.firstTime}"  style="margin-left: 5px"/>
+                        <p:outputLabel value="Skanë Votuar: " styleClass="bold" style="margin-left: 20px" />
+                        <p:outputLabel value="#{viewQvStatBean.stats.noVoting}"  style="margin-left: 5px"/>
+                        <p:outputLabel value="Anëtarë: " styleClass="bold" style="margin-left: 20px" />
+                        <p:outputLabel value="#{viewQvStatBean.stats.members}" style="margin-left: 5px" />
+                        <p:outputLabel value="Patronazhistë: " styleClass="bold" style="margin-left: 20px"/>
+                        <p:outputLabel value="#{viewQvStatBean.stats.patronages}" style="margin-left: 5px" />
+                        <p:outputLabel value="Patr.Instit: " styleClass="bold" style="margin-left: 20px"/>
+                        <p:outputLabel value="#{viewQvStatBean.stats.instPatronages}" style="margin-left: 5px" />
+                        <p:outputLabel value="Nën Patronazh: " styleClass="bold" style="margin-left: 20px"/>
+                        <p:outputLabel value="#{viewQvStatBean.stats.inPatronages}" style="margin-left: 5px" />
+                        <p:outputLabel value="Nën Patr.Inst: " styleClass="bold" style="margin-left: 20px"/>
+                        <p:outputLabel value="#{viewQvStatBean.stats.inInstPatronages}" style="margin-left: 5px" />
+                        <p:outputLabel value="Pa Patronazh: " styleClass="bold" style="margin-left: 20px"/>
+                        <p:outputLabel value="#{viewQvStatBean.stats.voters - viewQvStatBean.stats.inPatronages}" style="margin-left: 5px" />
+</p:fieldset>
+
+                    </div>
+                </h:panelGroup>
+
+                <div class="ui-g-12 ui-fluid">
+                    <p:messages showDetail="true" closable="true">
+                     <p:autoUpdate/>
+                    </p:messages>
+                </div>
+               
+                <div class="ui-g-12 ui-md-9 ui-fluid">
+
+                    <p:dataTable id="tbl" rendered="#{not empty viewQvStatBean.persons}"
+                                 value="#{viewQvStatBean.persons}" var="p" 
+                                 paginator="true" 
+                                 currentPageReportTemplate="Shfaqur {startRecord}-{endRecord} nga {totalRecords}"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                 rows="20" rowsPerPageTemplate="10,20,30,50"
+                                 emptyMessage="Nuk ka rezultat"
+                                 rowIndexVar="r">
+                        <f:facet name="header">
+                            #{viewQvStatBean.header}
+                        </f:facet>
+                        <f:facet name="{Exporters}">
+                            <h:commandLink style="float: right">
+                                <p:graphicImage name="excel.png" library="images" width="24"/>
+                                <p:dataExporter type="xls" target="tbl" fileName="#{viewQvStatBean.header}" 
+                                                postProcessor="#{viewQvStatBean.postProcessXLS}"/>
+                            </h:commandLink>
+                        </f:facet>
+
+                        <p:column headerText="#">
+                            <h:outputText value="#{r+1}"/>
+                        </p:column>
+                        <p:column headerText="Nr.Listë" >
+                            <h:outputText value="#{p.votingNo}" styleClass="bold" />
+                        </p:column>
+                        <p:column headerText="Atribute" exportable="false">
+                            <s:personStatuses person="#{p}" />
+                        </p:column>
+                        <p:column headerText="Emri Atësia Mbiemri"  >
+                            <p:commandLink value="#{p.name} #{p.fatherName} #{p.surname}"
+                                           action="#{navBean.navigate('person_view')}" update=":main">
+								<f:param name="nid" value="#{p.nid}" />
+							</p:commandLink>
+                        </p:column>
+                        <p:column headerText="Datëlindja">
+                            <h:outputText value="#{p.dob}"/>
+                        </p:column>
+                        <p:column headerText="QV" sortBy="#{p.fraction}" >
+                            <h:outputText value="#{p.qv.code}/#{p.fraction}"/>
+                        </p:column>
+                        <p:column headerText="Adresa">
+                            <h:outputText value="#{p.qvAddress}" />
+                        </p:column>
+                        <p:column headerText="Patronazhistët" exportable="false" >
+                            <ui:repeat value="#{viewQvStatBean.getPersonPatronages(p)}" var="pt">
+                                <h:outputText value="#{pt.patronage.person.name} #{pt.patronage.person.fatherName} #{pt.patronage.person.surname} " />
+                            </ui:repeat>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </div>                    
+                <div class="ui-g-12 ui-md-3 ui-fluid">
+                    <div>
+                        <p:dataTable rendered="#{not empty viewQvStatBean.persons}"
+                                     value="#{viewQvStatBean.qvPatronages}" var="pt" 
+                                     paginator="true" 
+                                     pageLinks="1"
+                                     rows="10" rowsPerPageTemplate="10,20,30,50"
+                                     emptyMessage="Nuk ka rezultat"
+                                     rowIndexVar="r">
+                            <f:facet name="header">
+                                Patronazhistët
+                            </f:facet>
+                            <p:column headerText="#">
+                                #{r+1}
+                            </p:column>
+                            <p:column headerText="Personi">
+                                <p:commandLink value="#{pt.person.name} #{pt.person.fatherName} #{pt.person.surname}" 
+                                 action="#{navBean.navigate('person_view')}" update=":main">
+								<f:param name="nid" value="#{pt.person.nid}" />
+							</p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                        <br/>
+                        <p:dataTable rendered="#{not empty viewQvStatBean.persons}"
+                                     value="#{viewQvStatBean.qvPois}" var="poi" 
+                                     paginator="true" 
+                                     pageLinks="1"
+                                     rows="10" rowsPerPageTemplate="10,20,30,50"
+                                     emptyMessage="Nuk ka rezultat"
+                                     rowIndexVar="r">
+                            <f:facet name="header">
+                                Patronazhistët e Jashtëm
+                            </f:facet>
+                            <p:column headerText="#">
+                                #{r+1}
+                            </p:column>
+                            <p:column headerText="Personi">
+                                #{poi.person.name} #{poi.person.fatherName} #{poi.person.surname}
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div> 
+            
+            </h:panelGroup>            
+        </h:form>
+
+</ui:composition>

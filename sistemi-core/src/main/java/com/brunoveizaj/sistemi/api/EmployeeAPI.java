@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.brunoveizaj.sistemi.assemblers.Assembler;
 import com.brunoveizaj.sistemi.dto.EmployeeDTO;
+import com.brunoveizaj.sistemi.dto.EmployeePeriodDTO;
 import com.brunoveizaj.sistemi.entities.Employee;
 import com.brunoveizaj.sistemi.forms.EmployeeSx;
 import com.brunoveizaj.sistemi.service.EmployeeService;
@@ -30,6 +31,22 @@ public class EmployeeAPI {
 	@Autowired 
 	TokenService tokenService;
 	
+	
+	@RequestMapping(value="/getEmploymentPeriods/{nid}", method=RequestMethod.GET, produces={"application/json"})
+	public ResponseEntity<?> getEmploymentPeriods(@RequestHeader(value="Authorization") String token, @PathVariable String nid)
+	{
+		String uname = tokenService.getUsername(token);
+		
+		List<EmployeePeriodDTO> list = new Assembler().employmentPeriodListToDto(employeeService.getEmploymentPeriods(nid, uname));
+		
+		if(list == null || list.isEmpty())
+		{
+			return new ResponseEntity<>("Nuk ka te dhena",HttpStatus.NO_CONTENT);
+		}
+		
+		return new ResponseEntity<>(list,HttpStatus.OK);
+		
+	}
 	
 	@RequestMapping(value="/getEmployment/{nid}", method=RequestMethod.GET, produces={"application/json"})
 	public ResponseEntity<?> getEmployment(@RequestHeader(value="Authorization") String token, @PathVariable String nid)

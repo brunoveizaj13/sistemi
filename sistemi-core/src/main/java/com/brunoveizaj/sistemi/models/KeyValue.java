@@ -31,7 +31,7 @@ public class KeyValue implements Serializable {
 	}
 	
 	public KeyValue(Date key, Object value) {
-		if(key == null) this.key="01/11";
+		if(key == null) this.key="20/03";
 		else this.key = new SimpleDateFormat("dd/MM").format(key);
 		this.value = value;
 	}

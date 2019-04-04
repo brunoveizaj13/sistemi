@@ -25,6 +25,7 @@ public class QvStatisticDTO implements Serializable {
     private Integer members;
     private Integer patronages;
     private Integer inPatronages;
+    private Integer instPatronages;
     private Integer inInstPatronages;
     private Integer pois;
 	

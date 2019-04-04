@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.brunoveizaj.sistemi.entities.Employee;
+import com.brunoveizaj.sistemi.entities.EmploymentPeriod;
 import com.brunoveizaj.sistemi.forms.EmployeeSx;
 import com.brunoveizaj.sistemi.utils.StringUtil;
 
@@ -22,6 +23,15 @@ public class EmployeeDAO {
 	
 	@PersistenceContext
 	EntityManager em;
+	
+	
+	public List<EmploymentPeriod> getEmploymentPeriods(String nid)
+	{
+		return em.createQuery("FROM EmploymentPeriod e WHERE e.nid=:nid ORDER BY e.fromDate DESC,e.toDate DESC")
+				.setParameter("nid", nid.trim().toUpperCase())
+				.getResultList();
+	}
+	
 	
 	@SuppressWarnings("rawtypes")
 	public List<Employee> searchEmployees(EmployeeSx criterias)

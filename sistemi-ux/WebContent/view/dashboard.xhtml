@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+			<script type="text/javascript">
+				//<![CDATA[
+				function skinChart() {
+					this.cfg.animate = true;
+					this.cfg.shadow = false;
+					this.cfg.title = '';
+					this.cfg.seriesColors = [ '#4CAF50', '#39a3f4' ];
+					this.cfg.grid = {
+						background : 'transparent',
+						borderColor : 'transparent',
+						gridLineColor : '#{guestPreferences.dark ? "#121213" : "#dddddd"}',
+						shadow : false,
+					};
+					this.cfg.axesDefaults = {
+						rendererOptions : {
+							textColor : '#9fadb7'
+						},
+						tickOptions : {
+							textColor : '#9fadb7'
+						}
+					};
+					this.cfg.seriesDefaults = {
+						shadow : false,
+						lineWidth : 1,
+						markerOptions : {
+							shadow : false,
+							size : 7,
+							style : 'circle'
+						}
+					}
+					this.cfg.legend = {
+						show : false
+					}
+				}
+
+				setInterval(function() {
+					// setAnimation(PF('knob1'));
+					//  setAnimation(PF('knob2'));
+					//  setAnimation(PF('knob3'));
+					//  setAnimation(PF('knob4'));
+					//  PF('pb1').setValue(generateRandomNumber());
+					//  PF('pb2').setValue(generateRandomNumber());
+					//  PF('pb3').setValue(generateRandomNumber());
+				}, 2000);
+
+				function setAnimation(widget) {
+					widget.jq.animate({
+						value : generateRandomNumber()
+					}, {
+						duration : 1000,
+						easing : 'linear',
+						progress : function() {
+							widget.setValue(Math.floor(this.value));
+						}
+					});
+				}
+
+				function generateRandomNumber() {
+					return Math.floor(Math.random() * 100) + 1;
+				}
+				//]]>
+			</script>
+			<style type="text/css">
+.jqplot-xaxis-label {
+	color: #9fadb7;
+	display: none;
+}
+
+.jqplot-yaxis-label {
+	color: #9fadb7;
+}
+</style>
+
+
+	<h:form id="dashboard_form">
+	
+
+
+<h:panelGroup layout="group" id="dash_data">
+
+
+			<div class="ui-g dashboard">
+				<div class="ui-g-12">
+					<p:commandButton action="#{navBean.back()}" value="Mbrapa"
+						rendered="#{viewDashboardBean.renderBack}" process="@this"
+						update=":main" styleClass="orange-btn" icon="fa fa-arrow-left" />
+				</div>
+				<div class="ui-g-12 ui-fluid">
+					<p:panelGrid layout="grid" columns="4"
+						styleClass="ui-panelgrid-blank">
+
+						<p:selectOneMenu value="#{viewDashboardBean.regionId}"
+							autoWidth="false">
+							<p:ajax update="@form:dash_data"
+								listener="#{viewDashboardBean.onRegionSelect()}" />
+							<f:selectItem itemValue="#{null}" itemLabel="Qarku" />
+							<f:selectItems value="#{cacheBean.regions}" var="r"
+								itemValue="#{r.id}" itemLabel="#{r.name}" />
+						</p:selectOneMenu>
+
+						<p:selectOneMenu id="mun" value="#{viewDashboardBean.municipId}"
+							autoWidth="false">
+							<p:ajax update="@form:dash_data"
+								listener="#{viewDashboardBean.onMunicipalitySelect()}" />
+							<f:selectItem itemValue="#{null}" itemLabel="Bashkia" />
+							<f:selectItems
+								value="#{cacheBean.loadMunicipalities(viewDashboardBean.regionId,false)}"
+								var="m" itemValue="#{m.id}" itemLabel="#{m.name}" />
+						</p:selectOneMenu>
+						<p:selectOneMenu id="unit" value="#{viewDashboardBean.unitId}"
+							autoWidth="false">
+							<p:ajax update="@form:dash_data"
+								listener="#{viewDashboardBean.onUnitSelect()}" />
+							<f:selectItem itemValue="#{null}" itemLabel="Nj.Administrative" />
+							<f:selectItems
+								value="#{cacheBean.loadUnits(viewDashboardBean.municipId,false)}"
+								var="u" itemValue="#{u.id}" itemLabel="#{u.name}" />
+						</p:selectOneMenu>
+						<p:selectOneMenu id="qv" value="#{viewDashboardBean.qvId}"
+							autoWidth="false" filter="true">
+							<p:ajax update="@form:dash_data"
+								listener="#{viewDashboardBean.onQvSelect()}" />
+							<f:selectItem itemValue="#{null}" itemLabel="Kodi Qv" />
+							<f:selectItems value="#{viewDashboardBean.qvs}" var="q"
+								itemValue="#{q.id}" itemLabel="#{q.code}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+				</div>
+
+				<ui:include src="#{viewDashboardBean.activeDash}" />
+
+
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Patronazhistë">
+						<p:chart type="line" model="#{viewDashboardBean.patronageModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Të patronazhuar">
+						<p:chart type="line" model="#{viewDashboardBean.inPatronageModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Patronazhistë institucioni">
+						<p:chart type="line"
+							model="#{viewDashboardBean.inInstPatronageModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Të paronazhuar në institucion">
+						<p:chart type="line"
+							model="#{viewDashboardBean.inInstPatronageModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Patronazhistë sipas institucioneve">
+						<p:chart type="pie" model="#{viewDashboardBean.institutionModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+				<div class="ui-g-12 ui-md-6 ui-fluid">
+					<p:panel header="Persona me influencë">
+						<p:chart type="line" model="#{viewDashboardBean.poisModel}"
+							responsive="true" />
+					</p:panel>
+				</div>
+			</div>
+		</h:panelGroup>
+	</h:form>
+
+</ui:composition>

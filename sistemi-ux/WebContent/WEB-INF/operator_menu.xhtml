@@ -1,0 +1,32 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/apollo">
+
+    <div class="layout-menu-container">
+        <div class="nano">
+            <div class="nano-content menu-scroll-content">
+                <div class="layout-menu-title">MENU</div>
+                <h:form id="menuform">
+                    <pa:menu>
+                        <p:menuitem id="op_home" value="Home" icon="fa fa-home" action="#{menuBean.navigate('home','operator')}"/>
+                   	    <p:menuitem id="op_reg_form" value="Patronazhistët" icon="fa fa-users" action="#{menuBean.navigate('ptg_sx_form','operator')}"/>
+                   	    <p:menuitem id="op_reg_map" value="Harta" icon="fa fa-map" action="#{menuBean.navigate('ptg_map','operator')}"/>
+                   	    <p:menuitem id="op_ints_form" value="Institucionet" icon="fa fa-building" action="#{menuBean.navigate('ptg_inst_sx_form','operator')}"/>
+                   	    <p:menuitem id="op_poi_form" value="Persona me influencë" icon="fa fa-star" action="#{menuBean.navigate('poi_form','operator')}"/>
+                    </pa:menu>
+
+                   
+
+                </h:form>
+                
+                <div class="nano-scroll-footer" />
+            </div>
+        </div>
+    </div>
+
+
+</ui:composition>

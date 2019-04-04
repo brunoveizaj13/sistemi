@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+		<div class="ui-g">
+		<div class="ui-g-12">
+			<p:commandButton value="Mbrapa" icon="fa fa-arrow-left" action="#{viewMunicipalitiesBean.goToList()}"
+			styleClass="green-btn"
+			 update="@form"/>
+		</div>
+		
+		<div class="ui-g-12 ui-fluid">
+                                
+                                <p:dataTable value=" " emptyMessage="" >   
+                                
+                                <f:facet name="header">Statistikat e bashkisë</f:facet>
+                                    <p:column colspan="3" headerText="Totali" >
+                                        Gjithsej: 
+                                    </p:column>
+                                    <p:column headerText="Njësi">
+                                        #{viewMunicipalitiesBean.stats.units}
+                                    </p:column>
+                                    <p:column headerText="Banorë">
+                                        #{viewMunicipalitiesBean.stats.persons}
+                                    </p:column>
+                                    <p:column headerText="Votues">
+                                        #{viewMunicipalitiesBean.stats.voters}
+                                    </p:column>
+                                    <p:column headerText="Hera Parë">
+                                        #{viewMunicipalitiesBean.stats.firstTime}
+                                    </p:column>
+                                    <p:column headerText="Pa votuar">
+                                        #{viewMunicipalitiesBean.stats.noVoting}
+                                    </p:column>
+                                    <p:column headerText="Anëtarë">
+                                        #{viewMunicipalitiesBean.stats.members}
+                                    </p:column>
+                                    <p:column headerText="Patronazhist">
+                                        #{viewMunicipalitiesBean.stats.patronages}
+                                    </p:column>
+                                    <p:column headerText="Nën Patronazh">
+                                        #{viewMunicipalitiesBean.stats.inPatronages}
+                                    </p:column>
+                                    <p:column headerText="Pa Patronazh">
+                                        #{viewMunicipalitiesBean.stats.voters-viewMunicipalitiesBean.stats.inPatronages}
+                                    </p:column>
+                                    <p:column headerText="Patr.Jasht">
+                                        #{viewMunicipalitiesBean.stats.pois}
+                                    </p:column>
+                                    <p:column headerText="Patr.Inst">
+                                        #{viewMunicipalitiesBean.stats.instPatronages}
+                                    </p:column>
+                                    <p:column headerText="Nën Patr.Inst">
+                                        #{viewMunicipalitiesBean.stats.inInstPatronages}
+                                    </p:column>
+                                    
+                                </p:dataTable>
+                                
+                            </div>          
+		
+			<div class="ui-g-12 ui-md-5 ui-fluid">
+				 <p:commandLink update=":main" action="#{viewMunicipalitiesBean.goToPartyStructure()}">
+					<div class="card" style="background-image: linear-gradient(to bottom, #39a3f4 1%, #279cf5 99%);height: 100px">
+						
+						<h1 style="color:white; text-align: center; margin-top: 20px; font-size: 30px">
+						<i class="fa fa-sitemap" aria-hidden="true"/>
+					    	Struktura e Partisë
+						</h1>
+						
+					</div>
+				 </p:commandLink>
+			</div>
+			
+			<div class="ui-g-12 ui-md-2 ui-fluid" />
+			
+			<div class="ui-g-12 ui-md-5 ui-fluid">
+			    <p:commandLink update=":main" action="#{viewMunicipalitiesBean.goToMunicipalityAdministrate()}">
+					<div class="card" style="background-image: linear-gradient(to bottom, #76be45, #66b92d);height: 100px">
+						
+						<h1 style="color:white; text-align: center; margin-top: 20px;font-size: 30px">
+						<i class="fa fa-dot-circle-o" aria-hidden="true"/>
+						Administrata
+						</h1>
+						
+					</div>
+				</p:commandLink>
+			</div>
+			
+			<div class="ui-g-12 ui-md-5 ui-fluid" />
+			
+			<div class="ui-g-12 ui-md-2 ui-fluid" >
+			
+					<div class="card" style="background: #b821b3; border-radius: 50%; height: 70px; margin: 0;">
+						
+						<h1 style="color:white; text-align: center; margin-top: 18px">#{viewMunicipalitiesBean.municip.name}</h1>
+						
+					</div>
+			</div>
+			
+			<div class="ui-g-12 ui-md-5 ui-fluid" />
+			
+			
+			
+			<div class="ui-g-12 ui-md-5 ui-fluid">
+			    <p:commandLink update=":main" action="#{viewMunicipalitiesBean.goToDashboard()}">
+					<div class="card" style="background-image: linear-gradient(to bottom, #dea242, #d5942e);height: 100px">
+						
+						<h1 style="color:white; text-align: center; margin-top: 20px;font-size: 30px">
+						<i class="fa fa-object-group" aria-hidden="true"/>
+						
+						Patronazhi</h1>
+						
+					</div>
+				</p:commandLink>
+			</div>
+			
+			<div class="ui-g-12 ui-md-2 ui-fluid" />
+			
+			<div class="ui-g-12 ui-md-5 ui-fluid">
+			    <p:commandLink update=":main" action="#{viewMunicipalitiesBean.goToMunicipalitySubjects()}">
+					<div class="card" style="background-image: linear-gradient(to bottom, #d67161, #d65c49);height: 100px">
+						
+						<h1 style="color:white; text-align: center; margin-top: 20px;font-size: 30px">
+						<i class="fa fa-building" aria-hidden="true"/>
+						Bizneset</h1>
+						
+					</div>
+				</p:commandLink>
+			</div>
+			
+			
+			
+		</div>
+
+
+</ui:composition>

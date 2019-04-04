@@ -6,7 +6,7 @@
   <packaging>war</packaging>
   <name>sistemi-web</name>
   
-  <properties>
+    <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

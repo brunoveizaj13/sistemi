@@ -47,6 +47,8 @@ public class QvStatistic implements Serializable {
     private Integer patronages;
     @Column(name = "IN_PATRONAGES")
     private Integer inPatronages;
+    @Column(name = "INST_PATRONAGES")
+    private Integer instPatronages;
     @Column(name = "IN_INST_PATRONAGES")
     private Integer inInstPatronages;
     @Column(name = "POIS")

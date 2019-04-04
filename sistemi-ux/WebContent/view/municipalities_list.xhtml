@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<div class="ui-g ui-fluid">
+			<div class="ui-g-12">
+				<div class="card card-w-title">
+					<h1>Lista e bashkive</h1>
+					<div class="ui-g dashboard">
+						<div class="ui-g-12 ui-fluid">
+							<p:panelGrid layout="grid" columns="4" styleClass="ui-panelgrid-blank">
+								<p:outputLabel value="Qarku" styleClass="bold"/>
+								<p:selectOneMenu value="#{viewMunicipalitiesBean.regionId}" autoWidth="false">
+									<p:ajax update="@form"/>
+								 	<f:selectItem itemValue="#{null}" itemLabel="Shqipëria"/>
+								 	<f:selectItems value="#{cacheBean.regions}" var="r" itemValue="#{r.id}" itemLabel="#{r.name}"/>
+								</p:selectOneMenu>
+							</p:panelGrid>
+						</div>
+						<c:forEach items="#{cacheBean.loadMunicipalities(viewMunicipalitiesBean.regionId,true)}" var="m">
+							<div class="ui-g-12 ui-md-2 ui-fluid">
+								<p:commandLink action="#{viewMunicipalitiesBean.onMunicipalitySelect(m)}" update="@form">
+					                <div class="overview-box overview-box-2">
+					                    <div class="overview-value">#{m.name}</div>
+					                    <p:graphicImage name="images/dashboard/graph-green.svg" library="apollo-layout"/>
+					                </div>
+				                </p:commandLink>
+				            </div>
+						 </c:forEach>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+</ui:composition>
